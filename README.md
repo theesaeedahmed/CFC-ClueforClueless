@@ -11,6 +11,7 @@ A platform designed for those who feel lost when it comes to their career and ne
   - [For Course Publishers](#for-course-publishers)
 - [Contributors Section](#contributors-section)
   - [Contribution Guidelines](#contribution-guidelines)
+  - [Languages and Tools](#languages-and-tools)
   - [How to Start the Project Locally](#how-to-start-the-project-locally)
 - [License](#license)
 
@@ -71,6 +72,16 @@ The repository consists of 7 branches:
 - When creating a pull request, add a reviewer for better code quality and collaboration.
 
 <br/>
+
+### Languages and Tools
+- **Django**
+- **NextJs**
+- **MongoDB**
+- **Git**
+- **Github**
+- **Docker**
+
+<br />
 
 ### How to Start the Project Locally
 
