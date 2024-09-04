@@ -1,55 +1,83 @@
 # CFC: ClueforClueless
 
-A platform for clueless people who want to get something done in terms of career but don't know what to do, where to start.
-
-We will have a questionnaire that the user answers based on which, we make recommendations for career paths (roadmaps) and list/suggest relevant courses (like a course marketplace).
+A platform designed for those who feel lost when it comes to their career and need guidance on where to start. With a personalized questionnaire, CFC recommends tailored career paths (roadmaps) and suggests relevant courses from a comprehensive marketplace.
 
 ## Table of Contents
 
 - [Introduction](#introduction)
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Contributors' Section](#contributors-section)
+  - [For Users](#for-users)
+  - [For Course Publishers](#for-course-publishers)
+- [Contributors Section](#contributors-section)
+  - [Contribution Guidelines](#contribution-guidelines)
+  - [How to Start the Project Locally](#how-to-start-the-project-locally)
 - [License](#license)
+
+<br/>
 
 ## Introduction
 
-CFC is a course marketplace which also helps users find the best path to follow to get to the very best of their career.
+CFC is a course marketplace that assists users in finding the best career paths through personalized recommendations. It’s an all-in-one platform to guide users to success in their chosen careers.
+
+<br/>
 
 ## Features
 
-- Questionnaire-based recommendations (ML Counselling using LLM)
-- Course marketplace
-- Personalized roadmaps
+- **Questionnaire-Based Recommendations:** Leveraging Machine Learning for personalized career guidance.
+- **Course Marketplace:** A wide range of courses to help users achieve their career goals.
+- **Personalized Roadmaps:** Tailored plans to guide users through their career journey.
+
+<br/>
 
 ## Getting Started
-### For users:
-### For course publishers:
 
-## Contributors' Section
+### For Users
 
-Contributors must go through this section.
+*Instructions or guidelines for users on how to start using the platform.*
+
+<br/>
+
+### For Course Publishers
+
+*Instructions or guidelines for course publishers on how to contribute or publish courses on the platform.*
+
+<br/>
+
+## Contributors Section
+
+Contributors must review this section before making any contributions.
+
+<br/>
 
 ### Contribution Guidelines
 
-The repository has 7 branches.
- - main (default branch): Contains the latest stable version of the application (ml + backend + frontend).
- - ml: Contains the latest stable code for ml.
- - backend: Contains the latest stable code for backend.
- - frontend: Contains the latest stable code for frontend.
- - ml-local: Contains the development code for ml.
- - backend-local: Contains the development code for backend.
- - frontend-local: Contains the development code for frontend.
+The repository consists of 7 branches:
 
-Note: 
-- All changes are to be pushed to local branches only.
-- After pushing to the local branch, make sure the code is stable and create a pull request to the branch's non-local counterpart.
-- When all 3 (frontend, backend and ml) parts are stable, pull request to the main branch would be created.
-- Avoid pushing new branches. In case you have to, prefix them with "frontend-" or "backend-" or "ml-" accordingly.
-- When creating a pull request, it is suggested to add a reviewer to your pull request.
+- **main:** The default branch containing the latest stable version of the application (ML, backend, frontend).
+- **ml:** Contains the latest stable code for machine learning.
+- **backend:** Contains the latest stable code for the backend.
+- **frontend:** Contains the latest stable code for the frontend.
+- **ml-local:** Development branch for machine learning.
+- **backend-local:** Development branch for the backend.
+- **frontend-local:** Development branch for the frontend.
 
-### How to start the project locally?
+**Notes:**
+
+- Push all changes to the local branches only.
+- Ensure the code is stable before creating a pull request to the corresponding non-local branch.
+- A pull request to the `main` branch should only be created when the ML, backend, and frontend are all stable.
+- Avoid creating new branches unless necessary. If you do, prefix them with `frontend-`, `backend-`, or `ml-` as appropriate.
+- When creating a pull request, add a reviewer for better code quality and collaboration.
+
+<br/>
+
+### How to Start the Project Locally
+
+*Instructions on setting up the project locally for development or testing.*
+
+<br/>
 
 ## License
 
-This project is licensed under the MIT License...
+This project is licensed under the MIT License. See the [LICENSE](#) file for more details.
