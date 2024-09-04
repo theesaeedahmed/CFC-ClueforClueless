@@ -9,26 +9,46 @@ We will have a questionnaire that the user answers based on which, we make recom
 - [Introduction](#introduction)
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [For Developers](#for-developers)
+- [Contributors' Section](#contributors-section)
 - [License](#license)
 
 ## Introduction
 
-CFC is designed to help users find their career paths...
+CFC is a course marketplace which also helps users find the best path to follow to get to the very best of their career.
 
 ## Features
 
-- Questionnaire-based recommendations
+- Questionnaire-based recommendations (ML Counselling using LLM)
 - Course marketplace
 - Personalized roadmaps
 
 ## Getting Started
+### For users:
+### For course publishers:
 
-To get started with CFC...
+## Contributors' Section
 
-## For Developers
+Contributors must go through this section.
 
-This section contains information for developers who want to contribute to the CFC platform.
+### Contribution Guidelines
+
+The repository has 7 branches.
+ - main (default branch): Contains the latest stable version of the application (ml + backend + frontend).
+ - ml: Contains the latest stable code for ml.
+ - backend: Contains the latest stable code for backend.
+ - frontend: Contains the latest stable code for frontend.
+ - ml-local: Contains the development code for ml.
+ - backend-local: Contains the development code for backend.
+ - frontend-local: Contains the development code for frontend.
+
+Note: 
+- All changes are to be pushed to local branches only.
+- After pushing to the local branch, make sure the code is stable and create a pull request to the branch's non-local counterpart.
+- When all 3 (frontend, backend and ml) parts are stable, pull request to the main branch would be created.
+- Avoid pushing new branches. In case you have to, prefix them with "frontend-" or "backend-" or "ml-" accordingly.
+- When creating a pull request, it is suggested to add a reviewer to your pull request.
+
+### How to start the project locally?
 
 ## License
 
