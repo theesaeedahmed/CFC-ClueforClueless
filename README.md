@@ -65,16 +65,16 @@ The repository consists of 7 branches:
 
 **Notes:**
 
-- Push all changes to the local branches only.
+- Push all changes to the -local branches only.
 - Ensure the code is stable before creating a pull request to the corresponding non-local branch.
 - A pull request to the `main` branch should only be created when the ML, backend, and frontend are all stable.
-- Avoid creating new branches unless necessary. If you do, prefix them with `frontend-`, `backend-`, or `ml-` as appropriate.
+- Avoid pushing new branches unless necessary. If you do, prefix them with `frontend-`, `backend-`, or `ml-` as appropriate.
 - When creating a pull request, add a reviewer for better code quality and collaboration.
 
 <br/>
 
 ### Languages and Tools
-- **Django**
+- **Flask**
 - **NextJs**
 - **MongoDB**
 - **Git**
