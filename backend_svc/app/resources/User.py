@@ -11,7 +11,7 @@ class User(Resource):
         #     return {"message": "User not found"}, 404
         return response
 
-    def post(self):
+    def post(self, user_id):
         data = request.get_json()
         if not data or "user_id" not in data or "name" not in data:
             return {"message": "Bad request, missing user_id or name"}, 400
