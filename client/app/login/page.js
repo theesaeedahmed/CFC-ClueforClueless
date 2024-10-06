@@ -1,5 +1,5 @@
-'use client'
-import {useState} from 'react'
+"use client";
+import { useState } from "react";
 import {
   Flex,
   Heading,
@@ -14,10 +14,10 @@ import {
   Avatar,
   FormControl,
   FormHelperText,
-  InputRightElement
+  InputRightElement,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
-import { BiHide,BiShow } from "react-icons/bi";
+import { BiHide, BiShow } from "react-icons/bi";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -74,7 +74,7 @@ const Login = () => {
                   />
                   <InputRightElement width="5.8rem">
                     <Button h="1.75rem" size="sm" onClick={handleShowClick}>
-                      {showPassword ? <BiHide/> : <BiShow/>}
+                      {showPassword ? <BiHide /> : <BiShow />}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
@@ -106,4 +106,3 @@ const Login = () => {
 };
 
 export default Login;
-
