@@ -1,108 +1,129 @@
-"use client";
-import { useState } from "react";
+"use client"
+import { keyframes } from '@emotion/react';
+
+import { useState } from 'react'
 import {
+  Box,
+  Button,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
   Input,
-  Button,
-  InputGroup,
   Stack,
-  InputLeftElement,
-  chakra,
-  Box,
+  Text,
   Link,
-  Avatar,
-  FormControl,
-  FormHelperText,
-  InputRightElement,
-} from "@chakra-ui/react";
-import { FaUserAlt, FaLock } from "react-icons/fa";
-import { BiHide, BiShow } from "react-icons/bi";
+  useColorModeValue,
 
-const CFaUserAlt = chakra(FaUserAlt);
-const CFaLock = chakra(FaLock);
+} from '@chakra-ui/react'
+import NextLink from 'next/link'
 
-const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
 
-  const handleShowClick = () => setShowPassword(!showPassword);
+
+const animatedGradient = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+export default function AuthPage({ isLogin = true }) {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // Handle form submission
+    console.log({ email, password, name })
+  }
 
   return (
-    <Flex
-      flexDirection="column"
-      width="100wh"
-      height="100vh"
-      backgroundColor="gray.200"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Stack
-        flexDir="column"
-        mb="2"
-        justifyContent="center"
-        alignItems="center"
+    <Flex minH="100vh" direction={{ base: 'column', md: 'row' }}>
+      <Flex
+        flex={1}
+        align="center"
+        justify="center"
+        bgGradient="linear(to-r, #987070,#DBB5B5)"
+        backgroundSize="200% 200%"
+        animation={`${animatedGradient} 10s ease infinite`}
+        p={4}
+        color="white"
       >
-        <Avatar bg="teal.500" />
-        <Heading color="teal.400">Welcome</Heading>
-        <Box minW={{ base: "90%", md: "468px" }}>
-          <form>
-            <Stack
-              spacing={4}
-              p="1rem"
-              backgroundColor="whiteAlpha.900"
-              boxShadow="md"
-            >
-              <FormControl>
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<CFaUserAlt color="gray.300" />}
-                  />
-                  <Input type="email" placeholder="email address" />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    color="gray.300"
-                    children={<CFaLock color="gray.300" />}
-                  />
+        <Stack spacing={6} w="full" maxW="lg">
+          <Heading fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}>
+            {isLogin ? 'Welcome Back!' : 'Join Our Community'}
+          </Heading>
+          <Text fontSize={{ base: 'sm', md: 'md' }} color="gray.100">
+            CFC-ClueForClueless: Your gateway to personalized learning and career growth.
+          </Text>
+        </Stack>
+      </Flex>
+      <Flex flex={1} align="center" justify="center">
+        <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
+          <Stack align="center">
+            <Heading fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
+              {isLogin ? 'Sign in to your account' : 'Create your account'}
+            </Heading>
+          </Stack>
+          <Box
+            rounded="lg"
+            bg={useColorModeValue('white', 'gray.700')}
+            boxShadow="lg"
+            p={6}
+          >
+            <Stack spacing={3}>
+              {!isLogin && (
+                <FormControl id="name">
+                  <FormLabel>Name</FormLabel>
                   <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
-                  <InputRightElement width="5.8rem">
-                    <Button h="1.75rem" size="sm" onClick={handleShowClick}>
-                      {showPassword ? <BiHide /> : <BiShow />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-                <FormHelperText textAlign="right">
-                  <Link>forgot password?</Link>
-                </FormHelperText>
+                </FormControl>
+              )}
+              <FormControl id="email">
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </FormControl>
-              <Button
-                borderRadius={0}
-                type="submit"
-                variant="solid"
-                colorScheme="teal"
-                width="full"
-              >
-                Login
-              </Button>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </FormControl>
+              <Stack spacing={10}>
+                <Button
+                  bg="#C39898"
+                  color="white"
+                  _hover={{
+                    bg: '#987070',
+                  }}
+                  onClick={handleSubmit}
+                >
+                  {isLogin ? 'Sign in' : 'Sign up'}
+                </Button>
+              </Stack>
             </Stack>
-          </form>
-        </Box>
-      </Stack>
-      <Box>
-        New to us?{" "}
-        <Link color="teal.500" href="#">
-          Sign Up
-        </Link>
-      </Box>
+          </Box>
+          <Stack pt={6}>
+            <Text align="center">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
+              <NextLink href={isLogin ? "/signup" : "/login"} passHref>
+                <Link color="#C39898" ml={1}>
+                  {isLogin ? 'Sign up' : 'Sign in'}
+                </Link>
+              </NextLink>
+            </Text>
+          </Stack>
+        </Stack>
+      </Flex>
     </Flex>
-  );
-};
-
-export default Login;
+  )
+}
