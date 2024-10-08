@@ -6,4 +6,4 @@ debugger_enabled = Config.DEBUG
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=debugger_enabled)
+    app.run(debug=debugger_enabled, port=Config.PORT)

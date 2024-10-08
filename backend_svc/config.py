@@ -9,3 +9,4 @@ class Config:
     MONGO_URI = os.getenv("MONGO_URI_PROD") if os.getenv("IS_PROD") == "True" else os.getenv("MONGO_URI_LOCAL", "mongodb://localhost:27017/")
     DB_NAME = os.getenv("DB_NAME", "CFC")
     DEBUG = False if os.getenv("IS_PROD") == "True" else True
+    PORT = int(os.getenv("PORT", 5000))
