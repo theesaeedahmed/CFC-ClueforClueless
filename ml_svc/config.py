@@ -10,3 +10,5 @@ class Config:
     DB_NAME = os.getenv("DB_NAME", "CFC")
     DEBUG = False if os.getenv("IS_PROD") == "True" else True
     PORT = int(os.getenv("PORT", 5001))
+    SERP_API_KEY = os.getenv("SERP_API_KEY", "")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
