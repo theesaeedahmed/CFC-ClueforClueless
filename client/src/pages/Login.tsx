@@ -1,76 +1,68 @@
+import { useState } from "react"
+import { FaEye,FaEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import Logo from "../components/LogoMUI";
+
+const Login = () =>{
+
+    const [visible,setVisible] = useState(false)
+
+    return (
+        <div className="bg-gradient-to-l from-purple-400 to-white w-full min-h-screen h-full flex justify-center items-center">
+            <div className="container w-4/5 min-h-[90vh] h-full bg-white shadow-2xl rounded-md flex flex-nowrap my-4 ">
+
+                <div className="hidden lg:flex w-1/2 bg-purple-400 shadow-2xl rounded-l-md">
+                 <Logo/> 
+                </div>
+
+                <div className="w-full lg:w-1/2 flex justify-center items-center py-4">
+                    <div className="form-wrapper flex flex-col items-center justify-center h-full w-5/6 ">
+                            <div className="form-caption text-gray-700 text-center text-4xl font-semibold p-5">
+                                Welcome Back!
+                            </div>
+
+                            <div className="form-element flex flex-col justify-items-start w-full gap-4">
+                                <div>
+                                <label htmlFor="email" className="p-1">Email</label>
+                                <input placeholder="abc@xyz.com"id="email"type="email" className="w-full p-2 border border-gray-300"/>
+                                </div>
+                                
+                                <div className="relative w-full">
+                                    <label htmlFor="password" className="p-1">Password</label>
+                                    <input placeholder=" •••••••••" id="password"type={visible ? "text" : "password"} className="w-full p-2 border border-gray-300"/>
+                                    {visible ? <FaEyeSlash onClick={() => setVisible(false)} className="text-xl cursor-pointer absolute right-2 inset-y-8"/> : <FaEye onClick={() => setVisible(true)} className="text-xl cursor-pointer absolute right-2 inset-y-8"/>}
+                                    <button className="absolute right-0 inset-y-16 text-xs text-red-600 hover:text-red-800">Forgot password?</button>
+                                </div>
+                                
+                                <div className="w-full flex justify-center items-center pt-4  ">
+                                    <button className=" border-2 w-full p-2 text-purple-600 hover:text-purple-900 text-2xl bg-purple-100 hover:bg-purple-200 "> Sign in</button>
+                                </div>
+
+                                <div className="flex w-full justify-center items-center">
+                                    <div className="h-[0.5px] bg-slate-300 w-full"></div>
+                                    <p className="px-2">OR</p>
+                                    <div className="h-[0.5px] bg-slate-300 w-full"></div>
+                                </div>
+
+                                <div className="w-full flex justify-center items-center">
+                                    <div className="w-2/5 flex justify-center items-center border-2 gap-4 bg-black text-white p-2 hover:bg-slate-700">
+                                        <FcGoogle className="text-2xl"/>
+                                        <button>Sign in with Google</button>
+                                    </div>
+                                </div>
+
+                                <div className="w-full flex justify-center items-center">
+                                    <p>Don't have an account? <button className="text-purple-600 hover:text-purple-900 font-semibold underline">SIGN UP</button></p>
+                                </div>
 
 
-const LoginPage = () => {
-  return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left Side - Image */}
-      <div className="hidden md:flex w-full md:w-1/2 h-screen bg-cover bg-center" style={{ backgroundImage: `url('https://source.unsplash.com/random')` }}>
-        {/* You can replace the URL with your own image */}
-      </div>
-
-      {/* Right Side - Login Form */}
-      <div className="flex w-full md:w-1/2 justify-center items-center p-6 md:p-12 bg-gray-100">
-        <div className="w-full max-w-md">
-          <h2 className="text-2xl font-bold text-center text-gray-700 mb-8">Login</h2>
-          <form className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter your email"
-                required
-              />
+                            </div>
+                        
+                    </div>
+                </div>
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter your password"
-                required
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember_me"
-                  type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Forgot your password?
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Sign in
-              </button>
-            </div>
-          </form>
         </div>
-      </div>
-    </div>
-  );
-};
-
-export default LoginPage;
+    )
+}
+export default Login   
