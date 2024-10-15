@@ -38,6 +38,7 @@ import {
   FaRegCreditCard,
   FaBars,
 } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 // Custom theme
 const theme = extendTheme({
@@ -102,10 +103,14 @@ const Navbar = () => {
       </HStack>
 
       <HStack display={{ base: "none", md: "flex" }}>
+        <NavLink to="/login">
         <Button colorScheme="brand" variant="outline">
           Login
         </Button>
+        </NavLink>
+        <NavLink to="/signup">
         <Button colorScheme="brand">Register</Button>
+        </NavLink>
       </HStack>
 
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>

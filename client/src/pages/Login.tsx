@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import loginImage from "../images/auth2.png";
 import { IoBookOutline, IoRocketOutline, IoBulbOutline } from "react-icons/io5";
 import { HiMagnifyingGlass } from "react-icons/hi2";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import toast from "react-hot-toast";
 interface FormData {
   email: string;
   password: string;
@@ -25,8 +28,24 @@ const Login = () =>{
       }));
     };
 
-    const submitHandler = () => {
-      console.log(formData);
+    const submitHandler = async(e: React.FormEvent) => {
+      e.preventDefault();
+      try{
+        await signInWithEmailAndPassword(auth, formData.email,formData.password);
+        const user = auth.currentUser;
+        //console.log(user);
+        if(user){
+          // axios.post("http://localhost:3001/api/v1/auth/login",{uid:user.uid,email:formData.email,fullName:formData.fullName})
+          localStorage.setItem("userId",user.uid);
+          navigate("/home");
+        }
+        console.log("user created");
+        toast.success("Logged in Successfully",{position:"top-center",duration:3000});
+      }catch(error:any){
+        toast.error(error.message,{position:"top-center"});
+        console.log(error);
+      }
+      //console.log(formData);
     };
 
     return (

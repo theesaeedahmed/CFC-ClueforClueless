@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 import loginImage from "../images/auth2.png";
 import { IoBookOutline, IoRocketOutline, IoBulbOutline } from "react-icons/io5";
 import { HiMagnifyingGlass } from "react-icons/hi2";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+//import axios from "axios";
+import toast from "react-hot-toast";
 interface FormData {
   fullName: string;
   email: string;
@@ -28,8 +32,23 @@ const Signup = () =>{
       }));
     };
 
-    const submitHandler = () => {
-      console.log(formData);
+    const submitHandler = async(e: React.FormEvent) => {
+        e.preventDefault();
+        try{
+            await createUserWithEmailAndPassword(auth,formData.email,formData.password);
+            const user=auth.currentUser;  
+            console.log(user);
+            if(user){
+            //  axios.post("http://localhost:3001/api/v1/auth/signup",{uid:user.uid,email:formData.email,fullName:formData.fullName})
+             navigate("/login");
+            }
+            console.log("user created");
+            toast.success("Registered Successfully",{position:"top-center"}); 
+        }catch(error:any){
+            toast.error(error.message,{position:"top-center"});
+            console.log(error);
+        }
+        //console.log(formData);
     };
 
     return (
