@@ -3,6 +3,7 @@ import LandingPage from "./pages/Landing";
 import Login from "./pages/Login"
 import Signup from "./pages/Signup";
 import ProtectRoute from "./hooks/ProtectedRoute";
+import Home from "./pages/Home";
 
 export default function App() {
   return (
@@ -10,11 +11,12 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<Signup/>}/>
-      <Route path="/home" element={
+      {/* <Route path="/home" element={
         <ProtectRoute redirect="/login">
-          <LandingPage/>
+          <Home/>
         </ProtectRoute>
-      }></Route>
+      }></Route> */}
+      <Route path="/home" element={<Home/>}/>
     </Routes>
   );
 }
