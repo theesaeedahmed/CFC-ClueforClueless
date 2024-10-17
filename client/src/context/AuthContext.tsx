@@ -22,7 +22,7 @@ interface AuthContextType {
 // Create the context with a default value
 export const AuthContext = createContext<AuthContextType>({
   userData: null,
-  isAuthenticated: false,
+  isAuthenticated: true,
   logout: () => {},
 });
 

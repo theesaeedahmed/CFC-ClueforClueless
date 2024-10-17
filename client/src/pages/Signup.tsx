@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import loginImage from "../images/auth2.png";
 import { IoBookOutline, IoRocketOutline, IoBulbOutline } from "react-icons/io5";
 import { HiMagnifyingGlass } from "react-icons/hi2";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 //import axios from "axios";
 import toast from "react-hot-toast";
@@ -49,6 +49,25 @@ const Signup = () =>{
             console.log(error);
         }
         //console.log(formData);
+    };
+
+    const signInWithGoogle = async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const userCredential = await signInWithPopup(auth, provider);
+        const user = userCredential.user;
+        if (user) {
+          // axios.post("http://localhost:3001/api/v1/auth/signup",{uid:user.uid,email:formData.email,fullName:formData.fullName})
+          localStorage.setItem("userId", user.uid);
+          navigate("/home");
+        }
+        console.log("user created");
+        toast.success("signed in Successfully",{position:"top-center"});
+        console.log(user);
+      } catch (error:any) {
+        toast.error(error.message,{position:"top-center"});
+        console.error(error);
+      }
     };
 
     return (
@@ -131,7 +150,7 @@ const Signup = () =>{
                                 <div className="w-full flex justify-center items-center">
                                     <div className="w-1/2 flex justify-center items-center border-[1px] gap-4 rounded-lg  text-black p-2 hover:bg-slate-300 border-slate-500">
                                         <FcGoogle className="text-2xl"/>
-                                        <button>Sign up with Google</button>
+                                        <button onClick={signInWithGoogle}>Sign up with Google</button>
                                     </div>
                                 </div>
 
