@@ -4,6 +4,8 @@ import Login from "./pages/Login"
 import Signup from "./pages/Signup";
 import ProtectRoute from "./hooks/ProtectedRoute";
 import Home from "./pages/Home";
+import ProfilePage from "./pages/ProfilePage";
+import UserProfile from "./pages/UserProfile";
 
 
 export default function App() {
@@ -18,6 +20,7 @@ export default function App() {
           <Home/>
         </ProtectRoute>
       }></Route>
+      <Route path="/profile" element={<UserProfile/>}/>
     </Routes>
   );
 }
