@@ -1,4 +1,6 @@
+
 import React, { useState, useEffect } from "react";
+
 import {
   Box,
   Button,
@@ -370,8 +372,9 @@ const PricingCard = ({ name, price, features }) => (
       </Stack>
     </Stack>
 
-    <Box bg={"neutral.50"} px={6} py={10}>
-      {features.map((feature, index) => (
+
+    <Box bg={"brand.100"} px={6} py={10}>
+      {features.map((feature:any, index:any) => (
         <HStack key={index} mt={5} spacing={5} alignItems="flex-start">
           <Flex
             w={8}
