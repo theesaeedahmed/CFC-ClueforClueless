@@ -17,6 +17,7 @@ interface AuthContextType {
   userData: UserData | null;
   isAuthenticated: boolean;
   logout: () => void;
+  setIsAuthenticated: (value:boolean)=>void;
 }
 
 // Create the context with a default value
@@ -24,6 +25,8 @@ export const AuthContext = createContext<AuthContextType>({
   userData: null,
   isAuthenticated: true,
   logout: () => {},
+  setIsAuthenticated: ()=>{}
+
 });
 
 interface AuthProviderProps {
@@ -70,7 +73,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const value: AuthContextType = {
     userData,
     isAuthenticated,
-    logout  
+    logout,
+    setIsAuthenticated  
   }
 
   return (

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useContext, useState } from "react"
 import { FaEye,FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import toast from "react-hot-toast";
+import { AuthContext } from "@/context/AuthContext";
 interface FormData {
   email: string;
   password: string;
@@ -17,6 +18,7 @@ const Login = () =>{
     const [visible,setVisible] = useState(false)
     const [formData,setFormData] = useState<FormData>({email:"", password:""})
     const navigate = useNavigate();
+    const{ setIsAuthenticated} = useContext(AuthContext);
 
 
     const changeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -37,10 +39,12 @@ const Login = () =>{
         if(user){
           // axios.post("http://localhost:3001/api/v1/auth/login",{uid:user.uid,email:formData.email,fullName:formData.fullName})
           localStorage.setItem("userId",user.uid);
+          setIsAuthenticated(true);
           navigate("/home");
         }
-        console.log("user created");
+        //console.log("user created");
         toast.success("Logged in Successfully",{position:"top-center",duration:3000});
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }catch(error:any){
         toast.error(error.message,{position:"top-center"});
         console.log(error);
