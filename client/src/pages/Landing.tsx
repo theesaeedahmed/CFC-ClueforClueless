@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import {
   Box,
@@ -324,6 +324,7 @@ const TrustedBy = () => {
   }, [controls]);
 
   return (
+    <Box bg="white" pb={5}>
     <Box bg="neutral.100" py={10} overflow="hidden">
       <Container maxW="4xl">
         <Heading textAlign="center" mb={6} fontSize="2xl" color="neutral.800">
@@ -337,6 +338,7 @@ const TrustedBy = () => {
           ))}
         </MotionFlex>
       </Container>
+    </Box>
     </Box>
   );
 };
@@ -674,10 +676,11 @@ export default function LandingPage() {
         <Navbar />
         <Hero />
         <Features />
-        <TrustedBy />
+        
         <Pricing />
         <FAQSection />
         <Testimonials />
+        <TrustedBy />
         <Contact />
         <Footer />
         <CookieConsent />
