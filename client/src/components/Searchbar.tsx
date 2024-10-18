@@ -35,7 +35,7 @@ const Searchbar = () => {
     }, [charIndex, index]);
 
     return (
-        <div className="bg-gradient-to-b from-purple-200 to-white  min-h-[30vh] w-full mt-28 flex flex-col justify-center items-center pt-20 z-0 ">
+        <div className="bg-gradient-to-b from-purple-200 to-white  min-h-[30vh] w-full mt-28 flex flex-col justify-center items-center pt-20 z-0 max-w-screen ">
             <p className="text-3xl font-bold text-center mb-10">Explore Our Courses And Resources!</p>
             <div className="relative lg:w-2/5 w-3/5 z-5">
             <input

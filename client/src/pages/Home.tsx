@@ -8,7 +8,7 @@ const Home = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const[mycourses,setMycourses]=useState<Course []>(coursesData||[])
     return (
-        <div className="w-screen flex flex-col items-center h-full min-h-screen ">
+        <div className="w-full max-w-screen overflow-x-clip flex flex-col items-center h-full min-h-screen min-w-screen">
             <Navbar/>
             <Searchbar/>
             {mycourses.length>0 ? <ContinueLearning mycourses={mycourses}/> : ""}

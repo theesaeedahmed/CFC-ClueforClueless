@@ -4,7 +4,6 @@ import Login from "./pages/Login"
 import Signup from "./pages/Signup";
 import ProtectRoute from "./hooks/ProtectedRoute";
 import Home from "./pages/Home";
-import ProfilePage from "./pages/ProfilePage";
 import UserProfile from "./pages/UserProfile";
 
 
