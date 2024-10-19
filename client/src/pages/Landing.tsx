@@ -603,8 +603,8 @@ const Contact = () => (
   </Box>
 );
 
-const Footer = () => (
-  <Box bg={"brand.700"} color={"white"}>
+export const Footer = () => (
+  <Box bg={"brand.700"} color={"white"} >
     <Container
       as={Stack}
       maxW={"6xl"}

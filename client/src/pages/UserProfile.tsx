@@ -114,6 +114,7 @@ const UserProfile: React.FC = () => {
       ...prev,
       [section]: typeof prev[section] === 'object' ? { ...prev[section], [name]: value } : value,
     }));
+    console.log(userData);
   };
 
   const handleNewItemChange = (

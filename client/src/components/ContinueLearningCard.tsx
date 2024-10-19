@@ -6,9 +6,9 @@ interface ContinueLearningCardProps {
 
 const ContinueLearningCard = ({ course }: ContinueLearningCardProps) => {
     return (
-        <div className="flex flex-col md:flex-row bg-white border border-gray-200 rounded-lg shadow w-full hover:shadow-lg hover:shadow-slate-300">
+        <div className="flex flex-col md:flex-row bg-white border border-gray-200 rounded-lg shadow w-full hover:shadow-lg hover:shadow-slate-300 ">
             <img
-                className="object-cover w-full h-32 md:h-48 rounded-t-lg md:rounded-l-lg md:rounded-t-none md:w-2/5" // Adjusted width and height for horizontal layout
+                className=" w-full h-36 md:h-48 rounded-l-lg  md:w-2/5 object-cover" // Adjusted width and height for horizontal layout
                 src={course.instructor.image}
                 alt="Course image"
             />
