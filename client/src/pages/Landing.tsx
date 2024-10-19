@@ -31,7 +31,6 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionPanel,
-  AccordionIcon,
   Avatar,
 } from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
@@ -46,10 +45,11 @@ import {
   FaRegCreditCard,
   FaBars,
   FaQuoteLeft,
+  FaChevronRight,
+  FaChevronDown,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
-// Assume these imports are working
 import AmazonLogo from "../assets/Amazon.webp";
 import DeloitteLogo from "../assets/Deloitte-1.webp";
 import EvLogo from "../assets/Ev-1.webp";
@@ -59,6 +59,9 @@ import HanaLogo from "../assets/Hana.webp";
 import ThrasioLogo from "../assets/Thrasio-1.webp";
 import UnoLogo from "../assets/Uno-1.webp";
 import YomaBankLogo from "../assets/Yoma-Bank-1.webp";
+import backDrop from "../assets/backdrop.png";
+import FooterLanding from "@/components/FooterLanding";
+import ContactSection from "@/components/ContactSection";
 
 
 const theme = extendTheme({
@@ -112,6 +115,7 @@ const theme = extendTheme({
 
 const MotionBox = motion(Box);
 const MotionFlex = motion(Flex);
+const bg = {backDrop};
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -193,9 +197,71 @@ const Navbar = () => {
   );
 };
 
+// const Hero = () => (
+//   <Box
+//     bgGradient="linear(to-b, brand.200, brand.300)"
+//     color="neutral.800"
+//     py={{ base: 20, md: 32 }}
+//     px={8}
+//     display="flex"
+//     alignItems="center" // Center vertically
+//     justifyContent="space-between" // Space between text and image
+//     position="relative" // Position relative for absolute positioning of the image
+//   >
+//     <Container maxW={"3xl"}>
+//       <MotionBox
+//         initial={{ opacity: 0, y: 20 }}
+//         animate={{ opacity: 1, y: 0 }}
+//         transition={{ duration: 0.8 }}
+//       >
+//         <Heading as="h2" size="3xl" mb={6}>
+//           Unlock Your Career Potential with ClueForClueless
+//         </Heading>
+//         <Text fontSize="xl" mb={8}>
+//           Your all-in-one platform for personalized career guidance, curated
+//           courses, and success roadmaps.
+//         </Text>
+//         <Button
+//           as={motion.button}
+//           whileHover={{ scale: 1.05 }}
+//           whileTap={{ scale: 0.95 }}
+//           bg="white"
+//           color="brand.500"
+//           size="lg"
+//           fontWeight="bold"
+//           borderColor="neutral.100"
+//           borderRadius={"md"}
+//           px={8}
+//           _hover={{
+//             bg: "neutral.100",
+//             color: "black",
+//           }}
+//         >
+//           Start Your Journey
+//         </Button>
+//       </MotionBox>
+//     </Container>
+
+//     {/* Right Side Image */}
+//     <Box
+//       position="absolute" 
+//       right={0} 
+//       top={{ base: "20%", md: "25%" }} 
+//       width={{ base: "40%", md: "30%" }} 
+//       zIndex={1} 
+//     >
+//       <img
+//         src={backDrop} 
+//         alt="Career Guidance"
+//         style={{ width: "100%", height: "auto", borderRadius: "10px" }} // Make it responsive
+//       />
+//     </Box>
+//   </Box>
+// );
+
 const Hero = () => (
   <Box
-    bgGradient="linear(to-b, brand.200, brand.400)"
+    bgGradient="linear(to-b, brand.200, brand.300)"
     color="neutral.800"
     py={{ base: 20, md: 32 }}
     px={8}
@@ -218,13 +284,16 @@ const Hero = () => (
           as={motion.button}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          bg="brand.500"
-          color="white"
+          bg="white"
+          color="brand.500"
           size="lg"
           fontWeight="bold"
+          border-color="neutral.100"
+          borderRadius={"md"}
           px={8}
           _hover={{
-            bg: "brand.600",
+            bg: "neutral.100",
+            color: "black",
           }}
         >
           Start Your Journey
@@ -325,7 +394,7 @@ const TrustedBy = () => {
 
   return (
     <Box bg="white" pb={5}>
-    <Box bg="neutral.100" py={10} overflow="hidden">
+    <Box bg="neutral.50" py={10} overflow="hidden">
       <Container maxW="4xl">
         <Heading textAlign="center" mb={6} fontSize="2xl" color="neutral.800">
           Trusted by Industry Leaders
@@ -358,7 +427,7 @@ const PricingCard = ({ name, price, features }) => (
       <Text
         fontSize={"sm"}
         fontWeight={500}
-        bg={"brand.500"}
+        bg={"brand.400"}
         p={2}
         px={3}
         color={"white"}
@@ -375,7 +444,7 @@ const PricingCard = ({ name, price, features }) => (
     </Stack>
 
 
-    <Box bg={"brand.100"} px={6} py={10}>
+    <Box bg={"neutral.200"} px={6} py={10}>
       {features.map((feature:any, index:any) => (
         <HStack key={index} mt={5} spacing={5} alignItems="flex-start">
           <Flex
@@ -444,55 +513,82 @@ const Pricing = () => (
 );
 
 const FAQSection = () => (
-  <Box py={20} bg="brand.200" bgGradient="linear(to-5, brand.300, brand.500)">
+  <Box py={20} bg="neutral.100" bgGradient="linear(to-5, brand.100, brand.300)">
     <Container maxW="4xl">
       <Heading textAlign="center" mb={12} color="neutral.800">
         Frequently Asked Questions
       </Heading>
       <Accordion allowToggle>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left" fontWeight={500}>
-                What is ClueForClueless?
+        {faqData.map((faq, index) => (
+          <AccordionItem key={index} border="none">
+            {({ isExpanded }) => (
+              <Box
+                border="1px solid"
+                borderColor="gray.300"
+                borderRadius="md"
+                mb={4} 
+              >
+                <h2>
+                  <AccordionButton
+                    _hover={{ backgroundColor: "brand.100" }}
+                    _expanded={{
+                      bg: "brand.100",
+                      color: "brand.700",
+                      borderBottom: "none", 
+                    }}
+                    borderRadius={isExpanded ? "md md 0 0" : "md"} 
+                  >
+                    {/* Icon placed to the left and conditionally changed */}
+                    <Icon as={isExpanded ? FaChevronDown : FaChevronRight} mr={2} transition="transform 0.6s ease" />
+                    <Box flex="1" textAlign="left" fontWeight={500}>
+                      {faq.question}
+                    </Box>
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel
+                  pb={4}
+                  color="gray.700"
+                  fontWeight={400}
+                  bg="gray.80"
+                  borderRadius="0 0 md md" 
+                  maxHeight={isExpanded ? "500px" : "0"} 
+                  overflow="hidden" 
+                  transition="max-height 1s ease-in-out" 
+                >
+                  {faq.answer}
+                </AccordionPanel>
               </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4} color="white"fontWeight={400}>
-            ClueForClueless is an all-in-one platform for personalized career guidance, curated courses, and success roadmaps. We help professionals unlock their career potential through AI-powered recommendations and a vast marketplace of courses.
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left" fontWeight={500}>
-                How does the AI-generated roadmap work?
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4} color="white"fontWeight={400}>
-            Our AI analyzes your skills, goals, and industry trends to create a personalized career roadmap. It suggests courses, milestones, and skills to acquire, helping you visualize and achieve your career objectives.
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left" fontWeight={500}>
-                Can I cancel my subscription anytime?
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4} color="white"fontWeight={400}>
-            Yes, you can cancel your subscription at any time. If you cancel, you'll continue to have access to Clue until the end of your current billing period.
-          </AccordionPanel>
-        </AccordionItem>
+            )}
+          </AccordionItem>
+        ))}
       </Accordion>
     </Container>
   </Box>
 );
+
+const faqData = [
+  {
+    question: "What is ClueForClueless?",
+    answer: "ClueForClueless is an all-in-one platform for personalized career guidance, curated courses, and success roadmaps. We help professionals unlock their career potential through AI-powered recommendations and a vast marketplace of courses.",
+  },
+  {
+    question: "How does the AI-generated roadmap work?",
+    answer: "Our AI analyzes your skills, goals, and industry trends to create a personalized career roadmap. It suggests courses, milestones, and skills to acquire, helping you visualize and achieve your career objectives.",
+  },
+  {
+    question: "Can I cancel my subscription anytime?",
+    answer: "Yes, you can cancel your subscription at any time. If you cancel, you'll continue to have access to Clue until the end of your current billing period.",
+  },
+  {
+    question: "What are the benefits of being a premium user?",
+    answer: "Premium users get access to the roadmaps section and can activate up to 2 roadmap-suggested courses at any given time without any extra payment. If you want more courses, you can purchase them separately.",
+  },
+  {
+    question: "What if I want to take a course that isn't suggested by my roadmap?",
+    answer: "If the course isn't suggested by your roadmap, you'll need to purchase that course separately. The premium subscription only covers roadmap-suggested courses.",
+  }
+];
+
 
 const TestimonialCard = ({ name, role, company, testimonial }) => (
   <Box
@@ -548,77 +644,6 @@ const Testimonials = () => (
           testimonial="As someone transitioning careers, CFC provided the guidance I needed. The personalized recommendations were spot-on!"
         />
       </SimpleGrid>
-    </Container>
-  </Box>
-);
-
-const Contact = () => (
-  <Box py={20} id="contact" bg="neutral.100">
-    <Container maxW={"6xl"}>
-      <Heading textAlign="center" mb={12} color="neutral.800">
-        Get in Touch
-      </Heading>
-      <Box
-        bg={"white"}
-        borderRadius="2xl"
-        p={8}
-        color={"neutral.800"}
-        shadow="xl"
-      >
-        <VStack spacing={5}>
-          <FormControl isRequired>
-            <FormLabel>Name</FormLabel>
-            <Input type="text" name="name" placeholder="Your Name" />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Email</FormLabel>
-            <Input type="email" name="email" placeholder="Your Email" />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Message</FormLabel>
-            <Textarea
-              name="message"
-              placeholder="Your Message"
-              rows={6}
-              resize="none"
-            />
-          </FormControl>
-          <Button
-            as={motion.button}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            colorScheme="brand"
-            bg="brand.500"
-            color="white"
-            _hover={{
-              bg: "brand.600",
-            }}
-            width="full"
-          >
-            Send Message
-          </Button>
-        </VStack>
-      </Box>
-    </Container>
-  </Box>
-);
-
-export const Footer = () => (
-  <Box bg={"brand.700"} color={"white"} >
-    <Container
-      as={Stack}
-      maxW={"6xl"}
-      py={4}
-      direction={{ base: "column", md: "row" }}
-      spacing={4}
-      justify={{ base: "center", md: "space-between" }}
-      align={{ base: "center", md: "center" }}
-    >
-      <Text>© 2024 ClueForClueless. All rights reserved</Text>
-      <Stack direction={"row"} spacing={6}>
-        <Link href={"#"}>Privacy Policy</Link>
-        <Link href={"#"}>Terms of Service</Link>
-      </Stack>
     </Container>
   </Box>
 );
@@ -681,8 +706,10 @@ export default function LandingPage() {
         <FAQSection />
         <Testimonials />
         <TrustedBy />
-        <Contact />
-        <Footer />
+        {/* <Contact /> */}
+        <ContactSection/>
+        <FooterLanding />
+
         <CookieConsent />
       </Box>
     </ChakraProvider>
