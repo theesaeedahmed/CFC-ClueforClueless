@@ -1,171 +1,195 @@
-// Define interfaces for the data structure
-import image from "./courseImage.jpg"
-export interface Instructor {
-    name: string;
-    image: string;
-  }
-  
-  export interface Lesson {
-    lessonId: number;
-    title: string;
-    duration: string; // e.g., "15 min"
-  }
-  
-  export interface Course {
-    id: number;
-    title: string;
-    description: string;
-    instructor: Instructor;
-    rating: number; // e.g., 4.8
-    totalRatings: number; // e.g., 1200
-    price: number; // e.g., 49.99
-    discountPrice: number; // e.g., 29.99
-    duration: string; // e.g., "12 hours"
-    level: string; // e.g., "Beginner"
-    language: string; // e.g., "English"
-    categories: string[]; // e.g., ["Web Development", "Programming"]
-    lessons: Lesson[];
-  }
-  
-  // Create dummy data for two courses
-  export const coursesData: Course[] = [
-    {
-      id: 1,
-      title: "Introduction to JavaScript",
-      description: "A comprehensive course on JavaScript for beginners, covering the fundamentals of programming, syntax, and building interactive web pages.",
+import resumeImage from "./courseImage.jpg"
+import enrolledImage from "./EnrolledCourseImage.jpg"
+import recommendedImage from "./recommend.jpg"
+export interface Course {
+  id: string;
+  title: string;
+  description: string;
+  instructor: {
+      name: string;
+      image: string;
+  };
+  duration: string;
+  level: string;
+  rating: number;  // Rating field added
+}
+
+export interface Topic{
+  id:number;
+  title:string;
+}
+
+export const topicsData: Topic[] = [
+  {id:1,title:"Artificial Intelligence"},
+  {id:2,title:"System Design"},
+  {id:3,title:"Web Development"},
+  {id:4,title:"Python"},
+]
+
+export const resumeCoursesData: Course[] = [
+  {
+      id: "course1",
+      title: "Mastering React for Frontend Development",
+      description: "Dive deep into React and build powerful front-end applications with ease. Learn state management, hooks, and component-driven architecture.",
       instructor: {
-        name: "John Doe",
-        image: image,
+          name: "Sarah Lee",
+          image: resumeImage,
       },
-      rating: 4.8,
-      totalRatings: 1200,
-      price: 49.99,
-      discountPrice: 29.99,
       duration: "12 hours",
-      level: "Beginner",
-      language: "English",
-      categories: ["Web Development", "Programming"],
-      lessons: [
-        {
-          lessonId: 1,
-          title: "Introduction to JavaScript and Setup",
-          duration: "15 min",
-        },
-        {
-          lessonId: 2,
-          title: "Variables and Data Types",
-          duration: "20 min",
-        },
-        {
-          lessonId: 3,
-          title: "Functions and Scope",
-          duration: "25 min",
-        },
-        {
-          lessonId: 4,
-          title: "DOM Manipulation",
-          duration: "30 min",
-        },
-        {
-          lessonId: 5,
-          title: "Events and Event Handling",
-          duration: "30 min",
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Advanced CSS Techniques",
-      description: "Learn advanced CSS techniques, including Flexbox, Grid, animations, and responsive design to create stunning websites.",
-      instructor: {
-        name: "Jane Smith",
-        image: image,
-      },
-      rating: 4.7,
-      totalRatings: 900,
-      price: 59.99,
-      discountPrice: 39.99,
-      duration: "10 hours",
       level: "Intermediate",
-      language: "English",
-      categories: ["Web Development", "Design"],
-      lessons: [
-        {
-          lessonId: 1,
-          title: "CSS Flexbox Layout",
-          duration: "20 min",
-        },
-        {
-          lessonId: 2,
-          title: "CSS Grid Layout",
-          duration: "30 min",
-        },
-        {
-          lessonId: 3,
-          title: "CSS Animations and Transitions",
-          duration: "25 min",
-        },
-        {
-          lessonId: 4,
-          title: "Responsive Design Principles",
-          duration: "30 min",
-        },
-        {
-          lessonId: 5,
-          title: "Working with Pseudo-classes and Pseudo-elements",
-          duration: "20 min",
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: "React for Beginners",
-      description: "This course introduces you to React, a popular JavaScript library for building user interfaces. You will learn about components, props, state, and lifecycle methods.",
+      rating: 4.8
+  },
+  {
+      id: "course2",
+      title: "Data Science and Machine Learning with Python",
+      description: "Learn how to analyze data, perform complex computations, and build machine learning models using Python libraries like NumPy, Pandas, and Scikit-learn.",
       instructor: {
-        name: "Emily Johnson",
-        image: image,
+          name: "Dr. John Smith",
+          image: resumeImage,
       },
-      rating: 4.9,
-      totalRatings: 1500,
-      price: 69.99,
-      discountPrice: 49.99,
-      duration: "15 hours",
+      duration: "18 hours",
+      level: "Advanced",
+      rating: 4.9
+  },
+  {
+      id: "course3",
+      title: "UI/UX Design Principles for Modern Web Applications",
+      description: "A comprehensive guide to user interface and user experience design for web applications. Learn wireframing, prototyping, and user research.",
+      instructor: {
+          name: "Jessica Wong",
+          image: resumeImage,
+      },
+      duration: "10 hours",
       level: "Beginner",
-      language: "English",
-      categories: ["Web Development", "JavaScript"],
-      lessons: [
-        {
-          lessonId: 1,
-          title: "Getting Started with React",
-          duration: "20 min",
-        },
-        {
-          lessonId: 2,
-          title: "Understanding Components",
-          duration: "25 min",
-        },
-        {
-          lessonId: 3,
-          title: "Props and State",
-          duration: "30 min",
-        },
-        {
-          lessonId: 4,
-          title: "Handling Events",
-          duration: "30 min",
-        },
-        {
-          lessonId: 5,
-          title: "Lifecycle Methods in React",
-          duration: "25 min",
-        },
-        {
-          lessonId: 6,
-          title: "Building a Simple Application",
-          duration: "50 min",
-        },
-      ],
+      rating: 4.7
+  },]
+
+  export const enrolledCoursesData: Course[] = [
+  {
+      id: "course4",
+      title: "DevOps: From Continuous Integration to Deployment",
+      description: "Master DevOps practices, including continuous integration, deployment pipelines, monitoring, and automated infrastructure.",
+      instructor: {
+          name: "Mark Johnson",
+          image: enrolledImage,
+      },
+      duration: "15 hours",
+      level: "Intermediate",
+      rating: 4.6
+  },
+  {
+      id: "course5",
+      title: "Full-Stack Web Development with MERN",
+      description: "Learn to build full-stack applications using MongoDB, Express.js, React, and Node.js with hands-on projects.",
+      instructor: {
+          name: "Rachel Adams",
+          image: enrolledImage,
+      },
+      duration: "25 hours",
+      level: "Advanced",
+      rating: 4.9
+  },
+  {
+    id: "course2",
+    title: "Data Science and Machine Learning with Python",
+    description: "Learn how to analyze data, perform complex computations, and build machine learning models using Python libraries like NumPy, Pandas, and Scikit-learn.",
+    instructor: {
+        name: "Dr. John Smith",
+        image: resumeImage,
     },
-  ];
+    duration: "18 hours",
+    level: "Advanced",
+    rating: 4.9
+  },
+  {
+      id: "course6",
+      title: "JavaScript Essentials: ES6 to ES2021",
+      description: "Master modern JavaScript and its latest features from ES6 to ES2021, including promises, async/await, and arrow functions.",
+      instructor: {
+          name: "David King",
+          image: enrolledImage,
+      },
+      duration: "8 hours",
+      level: "Beginner",
+      rating: 4.8
+  },
+  {
+      id: "course7",
+      title: "Cloud Computing with AWS",
+      description: "Understand cloud architecture, EC2, S3, RDS, and other AWS services to build scalable and highly available applications.",
+      instructor: {
+          name: "Emily Brown",
+          image: enrolledImage,
+      },
+      duration: "20 hours",
+      level: "Intermediate",
+      rating: 4.7
+  },
+
+  {
+      id: "course8",
+      title: "Cybersecurity Fundamentals",
+      description: "Explore the basics of cybersecurity, including threat modeling, risk assessment, and basic security tools and practices.",
+      instructor: {
+          name: "Robert Garcia",
+          image: enrolledImage,
+      },
+      duration: "14 hours",
+      level: "Beginner",
+      rating: 4.6
+  },
+  {
+      id: "course9",
+      title: "Blockchain Development with Solidity",
+      description: "Build decentralized applications and smart contracts using Solidity, and understand blockchain technologies.",
+      instructor: {
+          name: "Sophia Green",
+          image: enrolledImage,
+      },
+      duration: "16 hours",
+      level: "Advanced",
+      rating: 4.9
+  },
+  {
+    id: "course3",
+    title: "UI/UX Design Principles for Modern Web Applications",
+    description: "A comprehensive guide to user interface and user experience design for web applications. Learn wireframing, prototyping, and user research.",
+    instructor: {
+        name: "Jessica Wong",
+        image: resumeImage,
+    },
+    duration: "10 hours",
+    level: "Beginner",
+    rating: 4.7
+  },
+]
+
+export const RecommendCoursesData: Course[] = [
   
-  
+
+  {
+      id: "course10",
+      title: "Mobile App Development with Flutter",
+      description: "Develop high-performance, cross-platform mobile applications using Flutter and Dart with this hands-on course.",
+      instructor: {
+          name: "Michael Harris",
+          image: recommendedImage,
+      },
+      duration: "22 hours",
+      level: "Intermediate",
+      rating: 4.8
+  },
+  {
+    id: "course11",
+    title: "Cybersecurity for Beginners",
+    instructor: {
+      name: "Dr. Amanda Shields",
+      image: recommendedImage,
+    },
+    description: "Understand the fundamentals of cybersecurity, including encryption, network security, threat detection, and risk management.",
+    rating: 4.6,
+    duration: "6 weeks",
+    level: "Beginner",
+  }
+];
+

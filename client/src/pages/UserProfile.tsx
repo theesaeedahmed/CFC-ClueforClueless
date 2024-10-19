@@ -129,6 +129,7 @@ const UserProfile: React.FC = () => {
           ? { ...prev[section], [name]: value }
           : value,
     }));
+    console.log(userData);
   };
 
   const handleNewItemChange = (
