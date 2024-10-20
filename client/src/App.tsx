@@ -5,7 +5,9 @@ import Signup from "./pages/Signup";
 import ProtectRoute from "./hooks/ProtectedRoute";
 import Home from "./pages/Home";
 import UserProfile from "./pages/UserProfile";
-
+import AdminDashboard from './pages/AdminDashboard';
+import AddCourse from './pages/AddCourse';
+import AdminViewCourse from './pages/AdminViewCourse';
 
 export default function App() {
 
@@ -20,6 +22,9 @@ export default function App() {
         </ProtectRoute>
       }></Route>
       <Route path="/profile" element={<UserProfile/>}/>
+      <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/add-course" element={<AddCourse />} />
+        <Route path="/admin-view-course" element={<AdminViewCourse />} />
     </Routes>
   );
 }
