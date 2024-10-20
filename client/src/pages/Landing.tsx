@@ -303,7 +303,7 @@ const Hero = () => (
   </Box>
 );
 
-const Feature = ({ title, text, icon }) => (
+const Feature = ({ title, text, icon }:any) => (
   <MotionBox
     whileHover={{ scale: 1.05 }}
     p={5}
@@ -412,7 +412,7 @@ const TrustedBy = () => {
   );
 };
 
-const PricingCard = ({ name, price, features }) => (
+const PricingCard = ({ name, price, features }:any) => (
   <MotionBox
     whileHover={{ scale: 1.05 }}
     maxW={"330px"}
@@ -590,7 +590,7 @@ const faqData = [
 ];
 
 
-const TestimonialCard = ({ name, role, company, testimonial }) => (
+const TestimonialCard = ({ name, role, company, testimonial }:any) => (
   <Box
     maxW="sm"
     borderWidth="1px"
