@@ -45,7 +45,7 @@ export default function Sidebar() {
         </div>
 
         {/* Separator */}
-        <div className="my-2 border-t border-gray-700" />
+        <div className="my-2 border-t border-gray-500 " />
 
         {/* Menu items */}
         <nav className="flex-grow space-y-2 px-4">
@@ -76,7 +76,7 @@ export default function Sidebar() {
         {/* Bottom section */}
         <div className="mt-auto p-4">
           <Link
-            to="/UserProfile" // Navigation for settings
+            to="/profile" // Navigation for settings
             onClick={() => setActiveItem('Settings')}
             className="group relative flex w-full items-center rounded-md px-2 py-2 hover:bg-gray-700"
           >
