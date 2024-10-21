@@ -1,25 +1,25 @@
-import React, { useState } from 'react'
-import { Menu, Search, Home, PlusSquare, Eye, Settings } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import { Menu, Search, Home, PlusSquare, Eye, Settings } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [activeItem, setActiveItem] = useState('Home')
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState("Home");
 
-  const toggleSidebar = () => setIsOpen(!isOpen)
+  const toggleSidebar = () => setIsOpen(!isOpen);
 
   const menuItems = [
-    { icon: Home, label: 'Dashboard', id: 'Home', to: '/' },
-    { icon: PlusSquare, label: 'Add Course', id: 'Add', to: '/add-course' },
-    { icon: Eye, label: 'View Course', id: 'View', to: '/admin-view-course' }
-  ]
+    { icon: Home, label: "Dashboard", id: "Home", to: "/" },
+    { icon: PlusSquare, label: "Add Course", id: "Add", to: "/add-course" },
+    { icon: Eye, label: "View Course", id: "View", to: "/admin-view-course" },
+  ];
 
   return (
     <div
       className={cn(
-        'flex-shrink-0 h-full bg-gray-800 text-gray-100 transition-all duration-300 ease-in-out border-r border-white-100',
-  isOpen ? 'w-64' : 'w-20'
+        "flex-shrink-0 h-full bg-gray-800 text-gray-100 transition-all duration-300 ease-in-out border-r border-white-100",
+        isOpen ? "w-64" : "w-20"
       )}
     >
       <div className="flex h-full flex-col">
@@ -28,7 +28,12 @@ export default function Sidebar() {
           <button onClick={toggleSidebar} className="self-start text-4xl">
             <Menu className="h-8 w-8" />
           </button>
-          <div className={cn('flex items-center', isOpen ? 'w-full' : 'justify-center')}>
+          <div
+            className={cn(
+              "flex items-center",
+              isOpen ? "w-full" : "justify-center"
+            )}
+          >
             {isOpen ? (
               <div className="flex w-full items-center rounded-md bg-gray-700 px-3 py-2">
                 <Search className="mr-2 h-5 w-5" />
@@ -44,7 +49,6 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* Separator */}
         <div className="my-2 border-t border-gray-500 " />
 
         {/* Menu items */}
@@ -52,16 +56,19 @@ export default function Sidebar() {
           {menuItems.map((item) => (
             <Link
               key={item.id}
-              to={item.to} // Navigation works even when the sidebar is closed
+              to={item.to}
               onClick={() => setActiveItem(item.id)}
               className={cn(
-                'group relative flex w-full items-center rounded-md px-2 py-2 transition-colors duration-200',
-                activeItem === item.id ? 'bg-purple-600 text-white' : 'hover:bg-gray-700'
+                "group relative flex w-full items-center rounded-md px-2 py-2 transition-colors duration-200",
+                activeItem === item.id
+                  ? "bg-purple-600 text-white"
+                  : "hover:bg-gray-700"
               )}
             >
-              {/* Icon remains clickable */}
               <item.icon className="h-6 w-8" />
-              {isOpen && <span className="ml-3 whitespace-nowrap">{item.label}</span>}
+              {isOpen && (
+                <span className="ml-3 whitespace-nowrap">{item.label}</span>
+              )}
 
               {/* Tooltip for hover effect when sidebar is collapsed */}
               {!isOpen && (
@@ -76,8 +83,8 @@ export default function Sidebar() {
         {/* Bottom section */}
         <div className="mt-auto p-4">
           <Link
-            to="/profile" // Navigation for settings
-            onClick={() => setActiveItem('Settings')}
+            to="/profile"
+            onClick={() => setActiveItem("Settings")}
             className="group relative flex w-full items-center rounded-md px-2 py-2 hover:bg-gray-700"
           >
             <Settings className="h-6 w-6" />
@@ -93,5 +100,5 @@ export default function Sidebar() {
         </div>
       </div>
     </div>
-  )
+  );
 }
