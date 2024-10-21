@@ -1,4 +1,3 @@
-// src/components/CourseCard.tsx
 import React from 'react';
 
 interface CourseCardProps {
