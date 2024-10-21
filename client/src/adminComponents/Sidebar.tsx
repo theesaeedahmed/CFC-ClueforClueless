@@ -1,19 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, Search, Home, PlusSquare, Eye, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeItem, setActiveItem] = useState("Home");
+  const location = useLocation();
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const menuItems = [
-    { icon: Home, label: "Dashboard", id: "Home", to: "/" },
-    { icon: PlusSquare, label: "Add Course", id: "Add", to: "/add-course" },
+    { icon: Home, label: "Dashboard", id: "Home", to: "/admin" },
+    { icon: PlusSquare, label: "Add Course", id: "Add", to: "/add-course",newTab:true },
     { icon: Eye, label: "View Course", id: "View", to: "/admin-view-course" },
   ];
+
+  useEffect(() => {
+    if (location.pathname === "/admin") {
+      setActiveItem("Home");
+    } else if (location.pathname === "/add-course") {
+      setActiveItem("Add");
+    } else if (location.pathname === "/admin-view-course") {
+      setActiveItem("View");
+    }
+  }, [location.pathname]);
 
   return (
     <div
@@ -54,6 +65,30 @@ export default function Sidebar() {
         {/* Menu items */}
         <nav className="flex-grow space-y-2 px-4">
           {menuItems.map((item) => (
+            item.newTab ? (
+              <a
+                key={item.id}
+                href={item.to}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "group relative flex w-full items-center rounded-md px-2 py-2 transition-colors duration-200",
+                  activeItem === item.id
+                    ? "bg-purple-600 text-white"
+                    : "hover:bg-gray-700"
+                )}
+              >
+                <item.icon className="h-6 w-8" />
+                {isOpen && (
+                  <span className="ml-3 whitespace-nowrap">{item.label}</span>
+                )}
+                {!isOpen && (
+                  <span className="absolute left-12 bg-gray-700 text-gray-100 rounded-md px-2 py-1 text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    {item.label}
+                  </span>
+                )}
+              </a>
+            ) : (
             <Link
               key={item.id}
               to={item.to}
@@ -62,7 +97,7 @@ export default function Sidebar() {
                 "group relative flex w-full items-center rounded-md px-2 py-2 transition-colors duration-200",
                 activeItem === item.id
                   ? "bg-purple-600 text-white"
-                  : "hover:bg-gray-700"
+                  : "hover:bg-gray-700 "
               )}
             >
               <item.icon className="h-6 w-8" />
@@ -77,6 +112,7 @@ export default function Sidebar() {
                 </span>
               )}
             </Link>
+            )
           ))}
         </nav>
 
