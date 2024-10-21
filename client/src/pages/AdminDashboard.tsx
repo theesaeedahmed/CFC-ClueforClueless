@@ -7,7 +7,7 @@ import Footer from '@/adminComponents/Footer';
 
 
 const AdminDashboard = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     // Show a success message

@@ -8,6 +8,8 @@ import UserProfile from "./pages/UserProfile";
 import AdminDashboard from './pages/AdminDashboard';
 import AddCourse from './pages/AddCourse';
 import AdminViewCourse from './pages/AdminViewCourse';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function App() {
 
