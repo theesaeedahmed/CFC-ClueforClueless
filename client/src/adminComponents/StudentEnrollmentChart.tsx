@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { Bar, Chart } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js'; 
+
 // Register all necessary components from Chart.js
 ChartJS.register(...registerables);
 
 const StudentEnrollmentChart = () => {
-  // Dummy data for multiple metrics
+  
   const data = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], 
     datasets: [

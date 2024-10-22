@@ -60,7 +60,6 @@ const AddCourseForm: React.FC = () => {
 
   const handlePreview = () => {
     setOpenPreviewDialog(true);
-    g;
     setOpenDialog(false);
   };
 
@@ -320,7 +319,7 @@ const AddCourseForm: React.FC = () => {
             coursePrice,
             sections,
           }}
-          onClose={() => setOpenPreviewDialog(false)} // Handle closing the preview dialog
+          onClose={() => setOpenPreviewDialog(false)}
         />
       )}
     </div>
