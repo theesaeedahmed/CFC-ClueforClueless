@@ -1,12 +1,13 @@
 from flask import current_app
 from bson import ObjectId
 from datetime import datetime, timezone
+from app.utils import Education, Skill, Social, Language, Course, Roadmap
 import re
 
 
 class UserModel:
     def __init__(self, user_document):
-        self._id = user_document("_id", ObjectId())  # Required, ObjectId, MongoDB ObjectId
+        self._id = user_document.get("_id", ObjectId())  # Required, ObjectId, MongoDB ObjectId
         self.uid = user_document.get("uid", None)  # Required, String, firebaseUserId
         self.name = user_document.get("name", None)  # Required, String, Full Name
         self.email = user_document.get("email", None)  # Required, String, Email to login
@@ -15,20 +16,41 @@ class UserModel:
         self.account_type = user_document.get("account_type", None)  # Required, String, ("instructor", "student", "admin")
         self.summary = user_document.get("summary", None)  # Optional, String, User summary
         self.profile_picture_url = user_document.get("profile_picture_url", None)  # Optional, String, Profile picture URL stored on cloud
-        self.gender = user_document.get("gender", None)  # Optional, String, ("male", "female", "other")
-        self.location = user_document.get("location", None)  # Optional, String, Location of user
+        self.gender = user_document.get("gender", None)  # Optional, String, ("male", "femaile", "other")
+        self.location = user_document.get("location", None)  # Optional, String
         self.date_of_birth = user_document.get("date_of_birth", None)  # Optional, Date
         self.subscribed_at = user_document.get("subscribed_at", None)  # Optional, Date
-        self.education = user_document.get(
-            "education", []
-        )  # Optional, List of Education objects, [{"institution": "String", "course": "String", "specialization": "String", "start_date": "Date", "end_date": "Date", "score": "Float"}] (score in percentage)
-        self.skills = user_document.get("skills", [])  # Optional, List of Skill objects, [{"name": "String", "level": "String"}]
-        self.socials = user_document.get("socials", [])  # Optional, List of Socials objects, [{"name": "String", "url": "String"}]
-        self.languages = user_document.get("languages", [])  # Optional, List of Language objects, [{"name": "String", "level": "String"}]
-        self.courses_enrolled_in = user_document.get(
-            "courses_enrolled_in", []
-        )  # Optional, List of Course objects, [{"_id": "ObjectId", "progress": "Float", started_at: "Date", completed_at: "Date", course_type: "String"}], (progress in percentage) (course_type ("activated", "bought"))
-        self.generated_roadmaps = user_document.get("generated_roadmaps", [])  # Optional, List of Roadmap objects
+
+        # Education, Skill, Social, Language, and Course objects initialization
+        self.education_history = [Education(**edu) for edu in user_document.get("education_history", [])]
+        self.skills = [Skill(**skill) for skill in user_document.get("skills", [])]
+        self.socials = [Social(**social) for social in user_document.get("socials", [])]
+        self.languages = [Language(**language) for language in user_document.get("languages", [])]
+        self.courses_enrolled_in = [Course(**course) for course in user_document.get("courses_enrolled_in", [])]
+        self.roadmaps = [Roadmap(**roadmap) for roadmap in user_document.get("roadmaps", [])]
+
+    def toDict(self):
+        return {
+            "_id": str(self._id),
+            "uid": self.uid,
+            "name": self.name,
+            "email": self.email,
+            "created_at": self.created_at.isoformat(),
+            "phone_number": self.phone_number,
+            "account_type": self.account_type,
+            "summary": self.summary,
+            "profile_picture_url": self.profile_picture_url,
+            "gender": self.gender,
+            "location": self.location,
+            "date_of_birth": self.date_of_birth.isoformat() if self.date_of_birth else None,
+            "subscribed_at": self.subscribed_at.isoformat() if self.subscribed_at else None,
+            "education": [edu.toDict() for edu in self.education],
+            "skills": [skill.toDict() for skill in self.skills],
+            "socials": [social.toDict() for social in self.socials],
+            "languages": [language.toDict() for language in self.languages],
+            "courses_enrolled_in": [course.toDict() for course in self.courses_enrolled_in],
+            "roadmaps": [roadmap.toDict() for roadmap in self.roadmaps],
+        }
 
     def validateAttributes(self):
         required_attributes = ["_id", "uid", "name", "email", "account_type", "created_at"]
@@ -45,7 +67,7 @@ class UserModel:
             "socials",
             "languages",
             "courses_enrolled_in",
-            "generated_roadmaps",
+            "roadmaps",
         ]
         email_regex = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
         account_types = {"instructor", "student", "admin"}
@@ -79,21 +101,6 @@ class UserModel:
                 raise Exception(f"Invalid {attribute}: {value}")
 
         return True
-
-    def toDict(self):
-        try:
-            return {
-                "id": str(self._id),
-                "uid": self.uid,
-                "name": self.name,
-                "email": self.email,
-                "phone_number": self.phone_number,
-                "summary": self.summary,
-                "profile_picture_url": self.profile_picture_url,
-            }
-        except Exception as e:
-            print(e)
-            raise Exception("Couldn't validate user data")
 
     @staticmethod
     def createUser(user_data):
