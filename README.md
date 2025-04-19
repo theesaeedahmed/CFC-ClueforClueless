@@ -85,9 +85,39 @@ The repository consists of 7 branches:
 
 ### How to Start the Project Locally
 
-*Instructions on setting up the project locally for development or testing.*
+### 🚀 Project Setup Instructions
 
-<br/>
+---
+
+#### 🖥️ For Client
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+---
+
+#### 🖥️ For ML SVC
+
+```bash
+cd ml_svc
+python -m venv .venv
+pip install -r requirements.txt
+python run.py
+```
+
+---
+
+#### 🖥️ For Backend SVC
+
+```bash
+cd backend_svc
+python -m venv .venv
+pip install -r requirements.txt
+python run.py
+```
 
 ## License
 
