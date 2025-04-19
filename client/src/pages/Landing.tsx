@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 
 import {
@@ -13,10 +12,6 @@ import {
   Icon,
   SimpleGrid,
   Link,
-  Input,
-  Textarea,
-  FormControl,
-  FormLabel,
   Stack,
   useDisclosure,
   Drawer,
@@ -62,7 +57,6 @@ import YomaBankLogo from "../assets/Yoma-Bank-1.webp";
 import backDrop from "../assets/backdrop.png";
 import FooterLanding from "@/components/FooterLanding";
 import ContactSection from "@/components/ContactSection";
-
 
 const theme = extendTheme({
   colors: {
@@ -115,7 +109,7 @@ const theme = extendTheme({
 
 const MotionBox = motion(Box);
 const MotionFlex = motion(Flex);
-const bg = {backDrop};
+const bg = { backDrop };
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -244,14 +238,14 @@ const Navbar = () => {
 
 //     {/* Right Side Image */}
 //     <Box
-//       position="absolute" 
-//       right={0} 
-//       top={{ base: "20%", md: "25%" }} 
-//       width={{ base: "40%", md: "30%" }} 
-//       zIndex={1} 
+//       position="absolute"
+//       right={0}
+//       top={{ base: "20%", md: "25%" }}
+//       width={{ base: "40%", md: "30%" }}
+//       zIndex={1}
 //     >
 //       <img
-//         src={backDrop} 
+//         src={backDrop}
 //         alt="Career Guidance"
 //         style={{ width: "100%", height: "auto", borderRadius: "10px" }} // Make it responsive
 //       />
@@ -376,7 +370,18 @@ const Features = () => (
 
 const TrustedBy = () => {
   const controls = useAnimation();
-  const logos = [AmazonLogo, DeloitteLogo, EvLogo, GeAviationLogo, MoreLogo, HanaLogo, MoreLogo,ThrasioLogo,UnoLogo,YomaBankLogo];
+  const logos = [
+    AmazonLogo,
+    DeloitteLogo,
+    EvLogo,
+    GeAviationLogo,
+    MoreLogo,
+    HanaLogo,
+    MoreLogo,
+    ThrasioLogo,
+    UnoLogo,
+    YomaBankLogo,
+  ];
 
   useEffect(() => {
     controls.start({
@@ -394,20 +399,24 @@ const TrustedBy = () => {
 
   return (
     <Box bg="white" pb={5}>
-    <Box bg="neutral.50" py={10} overflow="hidden">
-      <Container maxW="4xl">
-        <Heading textAlign="center" mb={6} fontSize="2xl" color="neutral.800">
-          Trusted by Industry Leaders
-        </Heading>
-        <MotionFlex animate={controls} width="200%">
-          {[...logos, ...logos].map((logo, index) => (
-            <Box key={index} width="10%" flexShrink={0} px={2}>
-              <img src={logo} alt={`Partner ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
-            </Box>
-          ))}
-        </MotionFlex>
-      </Container>
-    </Box>
+      <Box bg="neutral.50" py={10} overflow="hidden">
+        <Container maxW="4xl">
+          <Heading textAlign="center" mb={6} fontSize="2xl" color="neutral.800">
+            Trusted by Industry Leaders
+          </Heading>
+          <MotionFlex animate={controls} width="200%">
+            {[...logos, ...logos].map((logo, index) => (
+              <Box key={index} width="10%" flexShrink={0} px={2}>
+                <img
+                  src={logo}
+                  alt={`Partner ${index + 1}`}
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </Box>
+            ))}
+          </MotionFlex>
+        </Container>
+      </Box>
     </Box>
   );
 };
@@ -443,9 +452,8 @@ const PricingCard = ({ name, price, features }) => (
       </Stack>
     </Stack>
 
-
     <Box bg={"neutral.200"} px={6} py={10}>
-      {features.map((feature:any, index:any) => (
+      {features.map((feature: any, index: any) => (
         <HStack key={index} mt={5} spacing={5} alignItems="flex-start">
           <Flex
             w={8}
@@ -526,7 +534,7 @@ const FAQSection = () => (
                 border="1px solid"
                 borderColor="gray.300"
                 borderRadius="md"
-                mb={4} 
+                mb={4}
               >
                 <h2>
                   <AccordionButton
@@ -534,12 +542,16 @@ const FAQSection = () => (
                     _expanded={{
                       bg: "brand.100",
                       color: "brand.700",
-                      borderBottom: "none", 
+                      borderBottom: "none",
                     }}
-                    borderRadius={isExpanded ? "md md 0 0" : "md"} 
+                    borderRadius={isExpanded ? "md md 0 0" : "md"}
                   >
                     {/* Icon placed to the left and conditionally changed */}
-                    <Icon as={isExpanded ? FaChevronDown : FaChevronRight} mr={2} transition="transform 0.6s ease" />
+                    <Icon
+                      as={isExpanded ? FaChevronDown : FaChevronRight}
+                      mr={2}
+                      transition="transform 0.6s ease"
+                    />
                     <Box flex="1" textAlign="left" fontWeight={500}>
                       {faq.question}
                     </Box>
@@ -550,10 +562,10 @@ const FAQSection = () => (
                   color="gray.700"
                   fontWeight={400}
                   bg="gray.80"
-                  borderRadius="0 0 md md" 
-                  maxHeight={isExpanded ? "500px" : "0"} 
-                  overflow="hidden" 
-                  transition="max-height 1s ease-in-out" 
+                  borderRadius="0 0 md md"
+                  maxHeight={isExpanded ? "500px" : "0"}
+                  overflow="hidden"
+                  transition="max-height 1s ease-in-out"
                 >
                   {faq.answer}
                 </AccordionPanel>
@@ -569,26 +581,31 @@ const FAQSection = () => (
 const faqData = [
   {
     question: "What is ClueForClueless?",
-    answer: "ClueForClueless is an all-in-one platform for personalized career guidance, curated courses, and success roadmaps. We help professionals unlock their career potential through AI-powered recommendations and a vast marketplace of courses.",
+    answer:
+      "ClueForClueless is an all-in-one platform for personalized career guidance, curated courses, and success roadmaps. We help professionals unlock their career potential through AI-powered recommendations and a vast marketplace of courses.",
   },
   {
     question: "How does the AI-generated roadmap work?",
-    answer: "Our AI analyzes your skills, goals, and industry trends to create a personalized career roadmap. It suggests courses, milestones, and skills to acquire, helping you visualize and achieve your career objectives.",
+    answer:
+      "Our AI analyzes your skills, goals, and industry trends to create a personalized career roadmap. It suggests courses, milestones, and skills to acquire, helping you visualize and achieve your career objectives.",
   },
   {
     question: "Can I cancel my subscription anytime?",
-    answer: "Yes, you can cancel your subscription at any time. If you cancel, you'll continue to have access to Clue until the end of your current billing period.",
+    answer:
+      "Yes, you can cancel your subscription at any time. If you cancel, you'll continue to have access to Clue until the end of your current billing period.",
   },
   {
     question: "What are the benefits of being a premium user?",
-    answer: "Premium users get access to the roadmaps section and can activate up to 2 roadmap-suggested courses at any given time without any extra payment. If you want more courses, you can purchase them separately.",
+    answer:
+      "Premium users get access to the roadmaps section and can activate up to 2 roadmap-suggested courses at any given time without any extra payment. If you want more courses, you can purchase them separately.",
   },
   {
-    question: "What if I want to take a course that isn't suggested by my roadmap?",
-    answer: "If the course isn't suggested by your roadmap, you'll need to purchase that course separately. The premium subscription only covers roadmap-suggested courses.",
-  }
+    question:
+      "What if I want to take a course that isn't suggested by my roadmap?",
+    answer:
+      "If the course isn't suggested by your roadmap, you'll need to purchase that course separately. The premium subscription only covers roadmap-suggested courses.",
+  },
 ];
-
 
 const TestimonialCard = ({ name, role, company, testimonial }) => (
   <Box
@@ -654,12 +671,12 @@ const CookieConsent = () => {
   const handleAccept = () => {
     setShowConsent(false);
     // Here you would typically set a cookie or local storage item
-    localStorage.setItem('cookieConsent', 'true');
+    localStorage.setItem("cookieConsent", "true");
   };
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookieConsent');
-    if (consent === 'true') {
+    const consent = localStorage.getItem("cookieConsent");
+    if (consent === "true") {
       setShowConsent(false);
     }
   }, []);
@@ -679,7 +696,8 @@ const CookieConsent = () => {
       <Container maxW="6xl" py={4}>
         <Flex justifyContent="space-between" alignItems="center">
           <Text fontSize="sm">
-            This website stores cookies on your computer to serve you better. For more details, visit our{" "}
+            This website stores cookies on your computer to serve you better.
+            For more details, visit our{" "}
             <Link color="brand.500" href="/privacy-policy">
               Privacy Policy
             </Link>
@@ -701,13 +719,13 @@ export default function LandingPage() {
         <Navbar />
         <Hero />
         <Features />
-        
+
         <Pricing />
         <FAQSection />
         <Testimonials />
         <TrustedBy />
         {/* <Contact /> */}
-        <ContactSection/>
+        <ContactSection />
         <FooterLanding />
 
         <CookieConsent />

@@ -27,7 +27,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -53,7 +53,7 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
   }
 }
 @layer base {
@@ -62,5 +62,143 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Add these styles to your index.css file */
+
+.react-flow__node {
+  transition: transform 0.3s;
+}
+
+.react-flow__node:hover {
+  transform: scale(1.05);
+}
+
+.react-flow__edge-path {
+  transition: all 0.3s;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke-width: 2px;
+}
+/* Add these styles to your index.css file */
+
+.react-flow__node {
+  transition: transform 0.3s;
+}
+
+.react-flow__node:hover {
+  transform: scale(1.05);
+}
+
+.react-flow__edge-path {
+  transition: all 0.3s;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke-width: 2px;
+}
+
+/* Position the controls at the top */
+.react-flow__controls {
+  top: 10px;
+  right: 10px;
+  bottom: auto;
+}
+
+/* Fullscreen styles */
+.fullscreen-roadmap .react-flow__node {
+  transform: scale(1.2);
+}
+
+.fullscreen-roadmap .react-flow__node:hover {
+  transform: scale(1.3);
+}
+
+.fullscreen-roadmap .react-flow__controls {
+  transform: scale(1.2);
+}
+
+/* Improve visibility in fullscreen mode */
+.fullscreen-roadmap .react-flow__background {
+  opacity: 0.6;
+}
+
+.fullscreen-roadmap .react-flow__panel {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* Status-based node styling */
+.node-not-started {
+  background-color: #f8f9fa;
+  border-color: #ced4da;
+}
+
+.node-in-progress {
+  background-color: #e6f7ff;
+  border-color: #91caff;
+}
+
+.node-completed {
+  background-color: #e6ffed;
+  border-color: #91d5ff;
+}
+
+/* Fullscreen page specific styles */
+.fullscreen-roadmap .react-flow__controls {
+  margin-bottom: 20px;
+  margin-right: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 4px;
+}
+
+.fullscreen-roadmap.dark .react-flow__controls {
+  background-color: rgba(45, 55, 72, 0.9);
+}
+
+.fullscreen-roadmap .react-flow__controls-button {
+  border-radius: 4px;
+  margin: 2px;
+}
+
+.fullscreen-roadmap .react-flow__minimap {
+  bottom: 20px;
+  right: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Improved node visibility in fullscreen */
+.fullscreen-roadmap .react-flow__node {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.fullscreen-roadmap.dark .react-flow__node {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+/* Improved edge visibility */
+.fullscreen-roadmap .react-flow__edge-path {
+  stroke-width: 2px;
+}
+
+.fullscreen-roadmap .react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 5;
+  animation: flowAnimation 1s infinite linear;
+}
+
+@keyframes flowAnimation {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }

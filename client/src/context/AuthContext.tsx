@@ -1,7 +1,7 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
-import axios from 'axios';
+import React, { createContext, useState, useEffect, ReactNode } from "react";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import axios from "axios";
 
 // Define the shape of your user data
 interface UserData {
@@ -17,7 +17,7 @@ interface AuthContextType {
   userData: UserData | null;
   isAuthenticated: boolean;
   logout: () => void;
-  setIsAuthenticated: (value:boolean)=>void;
+  setIsAuthenticated: (value: boolean) => void;
 }
 
 // Create the context with a default value
@@ -25,8 +25,7 @@ export const AuthContext = createContext<AuthContextType>({
   userData: null,
   isAuthenticated: true,
   logout: () => {},
-  setIsAuthenticated: ()=>{}
-
+  setIsAuthenticated: () => {},
 });
 
 interface AuthProviderProps {
@@ -34,17 +33,17 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-
-
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
- 
+
   const getUserData = async () => {
     onAuthStateChanged(auth, async (user: User | null) => {
-      const uuid = localStorage.getItem('userId');
+      const uuid = localStorage.getItem("userId");
       if (user && uuid) {
         try {
-          const response = await axios.get<UserData>(`https://your-backend-api.com/users/${uuid}`);
+          const response = await axios.get<UserData>(
+            `http://localhost:5000/user/${uuid}`
+          );
           setUserData(response.data);
           setIsAuthenticated(true);
         } catch (error) {
@@ -53,10 +52,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else {
         setUserData(null);
         setIsAuthenticated(false);
-        localStorage.removeItem('userId');
+        localStorage.removeItem("userId");
       }
     });
-  }
+  };
 
   useEffect(() => {
     // Firebase Auth state listener
@@ -65,7 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     auth.signOut();
-    localStorage.removeItem('userId');
+    localStorage.removeItem("userId");
     setIsAuthenticated(false);
     setUserData(null);
   };
@@ -74,12 +73,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     userData,
     isAuthenticated,
     logout,
-    setIsAuthenticated  
-  }
+    setIsAuthenticated,
+  };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
