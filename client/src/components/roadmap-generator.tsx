@@ -16,7 +16,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import type { LearningPath } from "../lib/types";
-import { useRoadmap } from "../context/RoadmapContext";
+import { useRoadmap } from "@/hooks/useRoadmap";
 import { useAuth } from "@/hooks/useAuth";
 import { roadmapApi } from "../services/api";
 

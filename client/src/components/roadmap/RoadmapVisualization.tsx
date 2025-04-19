@@ -23,7 +23,7 @@ import { TopicNode } from "./nodes/TopicNode";
 import { SubtopicNode } from "./nodes/SubtopicNode";
 import { MainNode } from "./nodes/MainNode";
 import { CustomNode } from "./nodes/CustomNode";
-import { useRoadmap } from "../../context/RoadmapContext";
+import { useRoadmap } from "@/hooks/useRoadmap";
 import AddNodeDialog from "./AddNodeDialog";
 import {
   Box,
