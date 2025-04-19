@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRoadmap } from "@/hooks/useRoadmap";
-import { useAuth } from "@/hooks/useAuth";
 import { roadmapApi } from "../../services/api";
 import type { LearningPath } from "../../lib/types";
 import {
@@ -24,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { Loader2 } from "lucide-react";
 import React from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface RoadmapFormProps {
   onRoadmapGenerated?: (id: string) => void;
@@ -41,7 +41,7 @@ export default function RoadmapForm({ onRoadmapGenerated }: RoadmapFormProps) {
   const cancelRef = React.useRef<HTMLButtonElement>(null);
 
   // Store the generated roadmap temporarily
-  // const [tempRoadmap, setTempRoadmap] = useState<LearningPath | null>(null);
+  const [tempRoadmap, setTempRoadmap] = useState<LearningPath | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ export default function RoadmapForm({ onRoadmapGenerated }: RoadmapFormProps) {
 
     // Check if there's an existing unsaved roadmap
     if (state.currentRoadmap) {
-      // setTempRoadmap(null);
+      setTempRoadmap(null);
       onOpen();
       return;
     }
@@ -64,18 +64,33 @@ export default function RoadmapForm({ onRoadmapGenerated }: RoadmapFormProps) {
 
     try {
       // Call the backend API to generate a roadmap
+      console.log("Generating roadmap with prompt:", prompt);
       const response = await roadmapApi.generateRoadmap(prompt, userData?.id);
 
       if (response.error) {
         throw new Error(response.error);
       }
 
-      const roadmapData =
-        (response.data as { learningPath: LearningPath }).learningPath ||
-        ({} as LearningPath);
+      console.log("Received roadmap data:", response.data);
+
+      // Extract the learning path from the response
+      const roadmapData = response.data.learningPath as LearningPath;
+
+      console.log("Extracted learning path:", roadmapData);
+
+      // Ensure the learning path has all required properties
+      if (
+        !roadmapData.name ||
+        !roadmapData.description ||
+        !roadmapData.topics
+      ) {
+        console.error("Invalid learning path data:", roadmapData);
+        throw new Error("The generated roadmap data is incomplete or invalid");
+      }
 
       // Create a new roadmap and get its ID
       const roadmapId = createNewRoadmap(roadmapData);
+      console.log("Created new roadmap with ID:", roadmapId);
 
       // Navigate to the roadmap page with the ID
       navigate(`/roadmap/${roadmapId}`);
@@ -129,11 +144,9 @@ export default function RoadmapForm({ onRoadmapGenerated }: RoadmapFormProps) {
       // Generate a new one
       await generateRoadmap();
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to save roadmap";
       toast({
         title: "Error",
-        description: errorMessage,
+        description: "Failed to save roadmap",
         status: "error",
         duration: 3000,
         isClosable: true,

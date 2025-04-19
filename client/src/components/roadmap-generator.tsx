@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,17 +14,65 @@ import {
   Flex,
   useToast,
 } from "@chakra-ui/react";
-import type { LearningPath } from "../lib/types";
+import type { LearningPath, Subtopic, Topic } from "../lib/types";
 import { useRoadmap } from "@/hooks/useRoadmap";
-import { useAuth } from "@/hooks/useAuth";
-import { roadmapApi } from "../services/api";
+// import { useAuth } from "@/hooks/useAuth";
+
+// Mock function to generate a roadmap based on a prompt
+function generateMockRoadmap(prompt: string): LearningPath {
+  const timestamp = Date.now();
+  const topics = [
+    "Fundamentals",
+    "Core Concepts",
+    "Advanced Topics",
+    "Best Practices",
+    "Tools & Ecosystem",
+  ];
+
+  // Generate a unique name based on the prompt and timestamp
+  const roadmapName = `${
+    prompt.charAt(0).toUpperCase() + prompt.slice(1)
+  } Learning Path (${timestamp})`;
+
+  return {
+    name: roadmapName,
+    description: `A comprehensive learning path for ${prompt}. This roadmap covers everything from basics to advanced topics.`,
+    estimatedTime: "3-6 months",
+    topics: topics.map((topicName, topicIndex) => {
+      return {
+        name: `${topicName} of ${prompt}`,
+        description: `Learn the ${topicName.toLowerCase()} of ${prompt} and how to apply them.`,
+        estimatedTime: `${topicIndex + 2} weeks`,
+        subtopics: Array(3)
+          .fill(null)
+          .map((_, subtopicIndex) => {
+            return {
+              name: `${topicName} - Subtopic ${subtopicIndex + 1}`,
+              description: `Detailed exploration of ${topicName.toLowerCase()} subtopic ${
+                subtopicIndex + 1
+              } in ${prompt}.`,
+              estimatedTime: `${subtopicIndex + 1} weeks`,
+              technologiesAndConcepts: [
+                `${prompt} concept ${subtopicIndex + 1}`,
+                `${prompt} technique ${subtopicIndex + 1}`,
+              ],
+              prerequisites: [`Basic knowledge of ${prompt}`],
+              resources: [`${prompt} documentation`, `${topicName} tutorial`],
+              status: "not-started",
+            } as Subtopic;
+          }),
+        status: "not-started",
+      } as Topic;
+    }),
+    status: "not-started",
+  };
+}
 
 export default function RoadmapGenerator() {
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { createNewRoadmap } = useRoadmap();
-  const { userData } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -38,16 +85,10 @@ export default function RoadmapGenerator() {
     setError(null);
 
     try {
-      // Call the backend API to generate a roadmap
-      const response = await roadmapApi.generateRoadmap(prompt, userData?.id);
+      // Generate a mock roadmap locally instead of calling API
+      const roadmapData = generateMockRoadmap(prompt);
 
-      if (response.error) {
-        throw new Error(response.error);
-      }
-
-      // Create a new roadmap in the context (this doesn't save to backend yet)
-      const roadmapData = (response.data as { learningPath: LearningPath })
-        .learningPath;
+      // Create a new roadmap in the context
       const roadmapId = createNewRoadmap(roadmapData);
 
       // Navigate to the roadmap visualization

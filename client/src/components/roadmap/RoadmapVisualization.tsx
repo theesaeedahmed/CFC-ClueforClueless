@@ -52,8 +52,8 @@ import {
   Clock3,
   CheckCircle,
 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
 
+// IMPORTANT: Define nodeTypes outside of the component to avoid re-creation on each render
 const nodeTypes = {
   main: MainNode,
   topic: TopicNode,
@@ -75,10 +75,11 @@ function RoadmapFlow({
   learningPath,
   roadmapId,
   controlPosition = "top-right",
-  // showBackButton = true,
   fullscreen = false,
   onSave,
 }: RoadmapVisualizationProps) {
+  console.log("RoadmapFlow rendering with learningPath:", learningPath);
+
   // Check if we're in dark mode by checking the document element
   const isDarkMode = () => {
     return (
@@ -89,7 +90,6 @@ function RoadmapFlow({
 
   const [darkMode, setDarkMode] = useState(isDarkMode());
   const { state, saveRoadmap, updateNodesAndEdges } = useRoadmap();
-  const { userData } = useAuth();
   const reactFlowInstance = useReactFlow();
   const toast = useToast();
   const {
@@ -136,22 +136,25 @@ function RoadmapFlow({
   );
 
   // Handle node update
-  const handleNodeUpdate = useCallback((id: string, data: Node) => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              ...data,
-            },
-          };
-        }
-        return node;
-      })
-    );
-  }, []);
+  const handleNodeUpdate = useCallback(
+    (id: string, data: Partial<NodeData>) => {
+      setNodes((nds) =>
+        nds.map((node) => {
+          if (node.id === id) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                ...data,
+              },
+            };
+          }
+          return node;
+        })
+      );
+    },
+    []
+  );
 
   // Calculate progress for a topic based on its subtopics
   const calculateTopicProgress = useCallback(
@@ -266,114 +269,166 @@ function RoadmapFlow({
   );
 
   const createNodesAndEdges = useCallback(() => {
-    if (!learningPath) return { nodes: [], edges: [] };
+    console.log("Creating nodes and edges from:", learningPath);
 
-    let nodeId = 0;
-    const nodes: Node[] = [];
-    const edges: Edge[] = [];
+    if (!learningPath) {
+      console.error("No learningPath provided");
+      return { nodes: [], edges: [] };
+    }
 
-    // Main node
-    nodes.push({
-      id: `${nodeId}`,
-      data: {
-        label: learningPath.name,
-        description: learningPath.description,
-        estimatedTime: learningPath.estimatedTime,
-        status: learningPath.status || "not-started",
-        progress: 0,
-        onStatusChange: handleNodeStatusChange,
-        onNodeUpdate: handleNodeUpdate,
-      },
-      position: { x: 0, y: 0 },
-      type: "main",
-    });
+    try {
+      let nodeId = 0;
+      const nodes: Node[] = [];
+      const edges: Edge[] = [];
 
-    // Calculate positions for a radial layout
-    const topicCount = learningPath.topics?.length || 0;
-    const baseRadius = fullscreen ? 600 : 400; // Larger radius for fullscreen mode
-    const radius = baseRadius * nodeSpacing; // Apply spacing factor
-    const angleStep = (2 * Math.PI) / topicCount;
+      // Main node
+      nodes.push({
+        id: `${nodeId}`,
+        data: {
+          label: learningPath.name || "Unnamed Roadmap",
+          description: learningPath.description || "",
+          estimatedTime: learningPath.estimatedTime || "Unknown",
+          status: learningPath.status || "not-started",
+          progress: 0,
+          onStatusChange: handleNodeStatusChange,
+          onNodeUpdate: handleNodeUpdate,
+        },
+        position: { x: 0, y: 0 },
+        type: "main",
+      });
 
-    // Check if topics exist before mapping
-    if (learningPath.topics && learningPath.topics.length > 0) {
-      learningPath.topics.forEach((topic, topicIndex) => {
-        const angle = topicIndex * angleStep;
-        const topicX = Math.cos(angle) * radius;
-        const topicY = Math.sin(angle) * radius;
+      // Calculate positions for a radial layout
+      const topicCount = learningPath.topics?.length || 0;
 
-        const topicNodeId = `${++nodeId}`;
-        nodes.push({
-          id: topicNodeId,
-          data: {
-            label: topic.name,
-            description: topic.description,
-            estimatedTime: topic.estimatedTime,
-            status: topic.status || "not-started",
-            progress: 0,
-            onStatusChange: handleNodeStatusChange,
-            onNodeUpdate: handleNodeUpdate,
-          },
-          position: { x: topicX, y: topicY },
-          type: "topic",
-        });
+      if (topicCount === 0) {
+        console.warn("No topics found in learningPath");
+        return { nodes, edges };
+      }
 
-        edges.push({
-          id: `e0-${topicNodeId}`,
-          source: "0",
-          target: topicNodeId,
-          type: ConnectionLineType.SmoothStep,
-          animated: true,
-          style: { stroke: "#6366f1" },
-        });
+      const baseRadius = fullscreen ? 600 : 400; // Larger radius for fullscreen mode
+      const radius = baseRadius * nodeSpacing; // Apply spacing factor
+      const angleStep = (2 * Math.PI) / topicCount;
 
-        // Calculate positions for subtopics in a vertical column
-        const subtopicCount = topic.subtopics?.length || 0;
-        const baseSubtopicSpacing = fullscreen ? 300 : 250; // More spacing in fullscreen
-        const subtopicSpacing = baseSubtopicSpacing * nodeSpacing; // Apply spacing factor
+      // Check if topics exist before mapping
+      if (
+        learningPath.topics &&
+        Array.isArray(learningPath.topics) &&
+        learningPath.topics.length > 0
+      ) {
+        learningPath.topics.forEach((topic, topicIndex) => {
+          if (!topic) {
+            console.warn(`Topic at index ${topicIndex} is undefined`);
+            return;
+          }
 
-        topic.subtopics?.forEach((subtopic, subtopicIndex) => {
-          const subtopicNodeId = `${++nodeId}`;
-          const subtopicX =
-            topicX + Math.cos(angle) * (fullscreen ? 400 : 300) * nodeSpacing;
-          const subtopicY =
-            topicY +
-            Math.sin(angle) * (fullscreen ? 400 : 300) * nodeSpacing +
-            (subtopicIndex - (subtopicCount - 1) / 2) * subtopicSpacing;
+          const angle = topicIndex * angleStep;
+          const topicX = Math.cos(angle) * radius;
+          const topicY = Math.sin(angle) * radius;
 
+          const topicNodeId = `${++nodeId}`;
           nodes.push({
-            id: subtopicNodeId,
+            id: topicNodeId,
             data: {
-              label: subtopic.name,
-              description: subtopic.description,
-              estimatedTime: subtopic.estimatedTime,
-              resources: subtopic.resources,
-              prerequisites: subtopic.prerequisites,
-              technologiesAndConcepts: subtopic.technologiesAndConcepts,
-              status: subtopic.status || "not-started",
-              progress: subtopic.status === "completed" ? 100 : 0,
+              label: topic.name || `Topic ${topicIndex + 1}`,
+              description: topic.description || "",
+              estimatedTime: topic.estimatedTime || "Unknown",
+              status: topic.status || "not-started",
+              progress: 0,
               onStatusChange: handleNodeStatusChange,
               onNodeUpdate: handleNodeUpdate,
             },
-            position: { x: subtopicX, y: subtopicY },
-            type: "subtopic",
+            position: { x: topicX, y: topicY },
+            type: "topic",
           });
 
           edges.push({
-            id: `e${topicNodeId}-${subtopicNodeId}`,
-            source: topicNodeId,
-            target: subtopicNodeId,
+            id: `e0-${topicNodeId}`,
+            source: "0",
+            target: topicNodeId,
             type: ConnectionLineType.SmoothStep,
             animated: true,
-            style: { stroke: "#8b5cf6" },
+            style: { stroke: "#6366f1" },
           });
+
+          // Calculate positions for subtopics in a vertical column
+          const subtopicCount = topic.subtopics?.length || 0;
+          const baseSubtopicSpacing = fullscreen ? 300 : 250; // More spacing in fullscreen
+          const subtopicSpacing = baseSubtopicSpacing * nodeSpacing; // Apply spacing factor
+
+          if (topic.subtopics && Array.isArray(topic.subtopics)) {
+            topic.subtopics.forEach((subtopic, subtopicIndex) => {
+              if (!subtopic) {
+                console.warn(
+                  `Subtopic at index ${subtopicIndex} in topic "${topic.name}" is undefined`
+                );
+                return;
+              }
+
+              const subtopicNodeId = `${++nodeId}`;
+              const subtopicX =
+                topicX +
+                Math.cos(angle) * (fullscreen ? 400 : 300) * nodeSpacing;
+              const subtopicY =
+                topicY +
+                Math.sin(angle) * (fullscreen ? 400 : 300) * nodeSpacing +
+                (subtopicIndex - (subtopicCount - 1) / 2) * subtopicSpacing;
+
+              nodes.push({
+                id: subtopicNodeId,
+                data: {
+                  label: subtopic.name || `Subtopic ${subtopicIndex + 1}`,
+                  description: subtopic.description || "",
+                  estimatedTime: subtopic.estimatedTime || "Unknown",
+                  resources: Array.isArray(subtopic.resources)
+                    ? subtopic.resources
+                    : [],
+                  prerequisites: Array.isArray(subtopic.prerequisites)
+                    ? subtopic.prerequisites
+                    : [],
+                  technologiesAndConcepts: Array.isArray(
+                    subtopic.technologiesAndConcepts
+                  )
+                    ? subtopic.technologiesAndConcepts
+                    : [],
+                  status: subtopic.status || "not-started",
+                  progress: subtopic.status === "completed" ? 100 : 0,
+                  onStatusChange: handleNodeStatusChange,
+                  onNodeUpdate: handleNodeUpdate,
+                },
+                position: { x: subtopicX, y: subtopicY },
+                type: "subtopic",
+              });
+
+              edges.push({
+                id: `e${topicNodeId}-${subtopicNodeId}`,
+                source: topicNodeId,
+                target: subtopicNodeId,
+                type: ConnectionLineType.SmoothStep,
+                animated: true,
+                style: { stroke: "#8b5cf6" },
+              });
+            });
+          }
         });
+      } else {
+        console.error(
+          "topics is not an array or is empty:",
+          learningPath.topics
+        );
+      }
+
+      // Update node statuses based on their relationships
+      const updatedNodes = updateNodeStatuses(nodes, edges);
+
+      console.log("Successfully created nodes and edges:", {
+        nodes: updatedNodes.length,
+        edges: edges.length,
       });
+      return { nodes: updatedNodes, edges };
+    } catch (error) {
+      console.error("Error creating nodes and edges:", error);
+      return { nodes: [], edges: [] };
     }
-
-    // Update node statuses based on their relationships
-    const updatedNodes = updateNodeStatuses(nodes, edges);
-
-    return { nodes: updatedNodes, edges };
   }, [
     learningPath,
     fullscreen,
@@ -391,8 +446,33 @@ function RoadmapFlow({
 
   // Initialize nodes and edges
   const initialData = createNodesAndEdges();
-  const initialNodes = savedRoadmap?.nodes || initialData.nodes;
-  const initialEdges = savedRoadmap?.edges || initialData.edges;
+
+  // Convert saved NodeData to ReactFlow Nodes with proper position and id
+  const initialNodes =
+    savedRoadmap?.nodes && savedRoadmap.nodes.length > 0
+      ? savedRoadmap.nodes.map((nodeData, index) => {
+          // Ensure nodeData has id and position properties
+          const nodeId = nodeData.id || `node_${index}`;
+          const nodePosition = nodeData.position || { x: 0, y: 0 };
+
+          // Create a proper ReactFlow Node
+          return {
+            id: nodeId,
+            position: nodePosition,
+            data: {
+              ...nodeData,
+              onStatusChange: handleNodeStatusChange,
+              onNodeUpdate: handleNodeUpdate,
+            },
+            type: nodeData.type || "default",
+          } as Node;
+        })
+      : initialData.nodes;
+
+  const initialEdges =
+    savedRoadmap?.edges && savedRoadmap.edges.length > 0
+      ? savedRoadmap.edges
+      : initialData.edges;
 
   // Set up nodes and edges state
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -412,8 +492,15 @@ function RoadmapFlow({
 
   // Update nodes and edges when learningPath or spacing changes
   useEffect(() => {
-    if (!savedRoadmap) {
+    if (
+      !savedRoadmap ||
+      (savedRoadmap.nodes && savedRoadmap.nodes.length === 0)
+    ) {
       const { nodes: newNodes, edges: newEdges } = createNodesAndEdges();
+      console.log("Setting new nodes and edges:", {
+        nodes: newNodes.length,
+        edges: newEdges.length,
+      });
       setNodes(newNodes);
       setEdges(newEdges);
 
@@ -459,7 +546,19 @@ function RoadmapFlow({
       ) {
         prevNodesRef.current = nodesString;
         prevEdgesRef.current = edgesString;
-        updateNodesAndEdges(nodes, edges);
+
+        // Convert ReactFlow nodes to NodeData before saving
+        const nodeData = nodes.map((node) => {
+          // Extract the necessary properties from the node
+          return {
+            ...node.data,
+            id: node.id,
+            position: node.position,
+            type: node.type,
+          } as NodeData;
+        });
+
+        updateNodesAndEdges(nodeData, edges);
       }
     }
   }, [nodes, edges, updateNodesAndEdges]);
@@ -516,19 +615,19 @@ function RoadmapFlow({
 
   // Handle save
   const handleSave = useCallback(async () => {
-    if (!userData?.id) {
-      toast({
-        title: "Login required",
-        description: "Please log in to save roadmaps",
-        status: "warning",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
     try {
-      await saveRoadmap(nodes, edges);
+      // Convert ReactFlow nodes to NodeData before saving
+      const nodeData = nodes.map((node) => {
+        // Extract the necessary properties from the node
+        return {
+          ...node.data,
+          id: node.id,
+          position: node.position,
+          type: node.type,
+        } as NodeData;
+      });
+
+      await saveRoadmap(nodeData, edges);
 
       toast({
         title: "Roadmap saved",
@@ -550,7 +649,7 @@ function RoadmapFlow({
         isClosable: true,
       });
     }
-  }, [nodes, edges, saveRoadmap, toast, onSave, userData?.id]);
+  }, [nodes, edges, saveRoadmap, toast, onSave]);
 
   // Handle adding a new node
   const handleAddNode = (nodeData: NodeData) => {
@@ -653,6 +752,32 @@ function RoadmapFlow({
     }
   };
 
+  // Add debug logging for nodes and edges
+  useEffect(() => {
+    console.log("Current nodes and edges:", {
+      nodes: nodes.length,
+      edges: edges.length,
+    });
+  }, [nodes, edges]);
+
+  // If no nodes, show debug info
+  if (nodes.length === 0) {
+    console.error("No nodes to render. LearningPath:", learningPath);
+    return (
+      <div className="flex flex-col items-center justify-center h-full w-full bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+        <h3 className="text-lg font-semibold mb-2">
+          No roadmap data to display
+        </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          The roadmap data could not be processed correctly.
+        </p>
+        <pre className="bg-gray-200 dark:bg-gray-700 p-4 rounded text-xs overflow-auto max-w-full max-h-[300px]">
+          {JSON.stringify(learningPath, null, 2)}
+        </pre>
+      </div>
+    );
+  }
+
   return (
     <ReactFlow
       nodes={nodes}
@@ -666,6 +791,7 @@ function RoadmapFlow({
       minZoom={0.1}
       maxZoom={1.5}
       defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
+      style={{ height: "100%", width: "100%" }} // Ensure proper dimensions
     >
       <Background
         color={darkMode || fullscreen ? "#333" : "#e0e0e0"}
@@ -699,7 +825,7 @@ function RoadmapFlow({
           maskColor="rgba(0, 0, 0, 0.2)"
           style={{
             right: 20,
-            bottom: 20,
+            bottom: 150,
             backgroundColor: darkMode
               ? "rgba(23, 25, 35, 0.9)"
               : "rgba(255, 255, 255, 0.9)",
@@ -747,7 +873,6 @@ function RoadmapFlow({
               size="sm"
               width="100%"
               mb={2}
-              isDisabled={!userData?.id}
             >
               Save Roadmap
             </Button>
@@ -856,7 +981,12 @@ function RoadmapFlow({
 export default function RoadmapVisualization(props: RoadmapVisualizationProps) {
   return (
     <ReactFlowProvider>
-      <RoadmapFlow {...props} />
+      <div
+        style={{ height: "800px", width: "100%" }}
+        className="border rounded-lg overflow-hidden bg-white dark:bg-gray-800"
+      >
+        <RoadmapFlow {...props} />
+      </div>
     </ReactFlowProvider>
   );
 }
